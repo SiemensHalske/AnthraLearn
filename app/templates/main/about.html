@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - AnthraLearn</title>
+  <link href="{{ url_for('static', filename='css/index_styles.css') }}" rel="stylesheet">
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('main.home') }}">Home</a></li>
+        <li><a href="{{ url_for('main.courses') }}">Courses</a></li>
+        <li><a href="{{ url_for('main.about') }}">About Us</a></li>
+        <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+      </ul>
+      <div class="user-profile">
+        <a href="javascript:void(0);" onclick="toggleDropdown()">👤</a>
+        <div class="dropdown-content">
+          <a href="#profile">Profile</a>
+          <a href="#settings">Settings</a>
+          <a href="{{ url_for('auth.logout') }}">Logout</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <section id="hero" class="hero">
+      <div class="hero-content">
+        <h1>About Us</h1>
+        <p>Learn more about AnthraLearn and our mission.</p>
+        <a href="#" class="btn btn-primary">Get to Know Us</a>
+      </div>
+    </section>
+  </div>
+
+  <section id="features" class="features">
+    <div class="feature-container">
+      <div class="feature">
+        <h2>Our Mission</h2>
+        <p>Empowering learners through accessible and engaging education.</p>
+      </div>
+    </div>
+    <div class="feature-container">
+      <div class="feature">
+        <h2>Our Team</h2>
+        <p>Meet the passionate individuals behind AnthraLearn.</p>
+      </div>
+    </div>
+    <div class="feature-container">
+      <div class="feature">
+        <h2>Our Values</h2>
+        <p>Transparency, inclusivity, and lifelong learning.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 Hendrik Siemens. All rights reserved.</p>
+  </footer>
+</body>
+</html>
