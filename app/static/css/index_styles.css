@@ -47,15 +47,15 @@ header nav {
 }
 
 .hero {
-    background: rgba(0, 0, 81, 0.3);
-    color: #fff;
-    padding: 40px 20px;
-    text-align: center;
-    border-radius: 15px;
-    margin: 20px auto; /* Centers the container */
-    width: 75%; /* Sets the width to match other containers */
-    box-sizing: border-box; /* Ensures padding is included in the width calculation */
-  }
+  background: rgba(0, 0, 81, 0.3);
+  color: #fff;
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 15px;
+  margin: 20px auto; /* Centers the container */
+  width: 75%; /* Sets the width to match other containers */
+  box-sizing: border-box; /* Ensures padding is included in the width calculation */
+}
 
 .features {
   display: flex;
@@ -101,6 +101,28 @@ footer {
   border-radius: 15px;
 }
 
+/* Footer links styling */
+footer .footer-links {
+  list-style: none; /* Removes bullet points from list */
+  padding: 0; /* Removes padding */
+}
+
+footer .footer-links li {
+  display: inline; /* Inline display for horizontal list */
+  margin-right: 10px; /* Spacing between links */
+}
+
+footer .footer-links li a {
+  color: #ddd; /* Maintains the same font color for consistency */
+  text-decoration: none; /* Removes underline from links */
+  transition: color 0.3s ease; /* Smooth color transition for hover effect */
+}
+
+footer .footer-links li a:hover {
+  color: #ffffff; /* Changes link color when hovering */
+  text-decoration: none; /* Ensures the underline does not reappear on hover */
+}
+
 .user-profile {
   position: relative;
   display: inline-block;
@@ -123,4 +145,91 @@ footer {
 
 .user-profile:hover .dropdown-content {
   display: block;
+}
+
+/* Terms of Service Section Styles */
+.terms-of-service,
+.disclaimer-section,
+.sitemap-section,
+.privacy-policy {
+  background: rgba(255, 255, 255, 0.85); /* Semi-transparent white */
+  color: #333; /* Dark text for readability */
+  padding: 40px 20px; /* Padding inside the section */
+  text-align: center; /* Center-align the headings and text */
+  border-radius: 15px; /* Rounded corners for the section */
+  margin: 20px auto; /* Centering the section horizontally */
+  width: 75%; /* Adjusted width to match disclaimer */
+  max-width: 1200px; /* Maximum width consistent with disclaimer content */
+  box-sizing: border-box; /* Include padding and border in the element's width */
+}
+
+/* Adjusting heading margins to match disclaimer */
+.terms-of-service h1,
+.disclaimer-section h1,
+.sitemap-section h1,
+.privacy-policy h1,
+.terms-of-service h2,
+.disclaimer-section h2,
+.sitemap-section h2,
+.privacy-policy h2 {
+  margin-bottom: 20px; /* Adds space below the headings */
+}
+
+/* Paragraph styles for justification and margin */
+.terms-of-service p,
+.disclaimer-section p,
+.sitemap-section p,
+.privacy-policy p {
+  margin-bottom: 20px; /* Space below each paragraph */
+  text-align: justify; /* Justifies the text for a clean, uniform look */
+}
+
+/* Article styles for alignment */
+.article,
+.disclaimer-container,
+.sitemap-container,
+.privacy-policy .article {
+  /* Assuming privacy-policy might contain article class */
+  text-align: left; /* Aligns text to the left for readability */
+}
+
+/* List styles within the article and disclaimer containers */
+.article ul,
+.article ol,
+.disclaimer-container ul,
+.disclaimer-container ol,
+.sitemap-container ul,
+.sitemap-container ol,
+.privacy-policy .article ul,
+.privacy-policy .article ol {
+  list-style: none; /* Removes default list bullet points */
+  padding: 0; /* Removes default padding */
+  margin: 0; /* Removes default margin */
+  padding-left: 20px; /* Adds indentation for readability */
+}
+
+.article li,
+.disclaimer-container li,
+.sitemap-container li,
+.privacy-policy .article li {
+  padding: 5px 0; /* Spacing out each list item */
+}
+
+/* Unified link styles across sections */
+.terms-of-service a,
+.article a,
+.disclaimer-container a,
+.sitemap-container a,
+.privacy-policy a {
+  color: #1e90ff; /* Consistent link color as used previously */
+  text-decoration: none; /* No underline */
+  transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.terms-of-service a:hover,
+.article a:hover,
+.disclaimer-container a:hover,
+.sitemap-container a:hover,
+.privacy-policy a:hover {
+  color: #0056b3; /* Darkened link color when hovered over */
 }

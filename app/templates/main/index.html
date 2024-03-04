@@ -64,7 +64,17 @@
       </div>
     </section>
     <footer>
-      <p>&copy; 2024 Hendrik Siemens. All rights reserved.</p>
+      <div class="footer-content">
+        <p>&copy; 2024 Hendrik Siemens. All rights reserved.</p>
+        <ul class="footer-links">
+          <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
+          <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
+          <li>
+            <a href="{{ url_for('main.disclaimer') }}">Legal Disclaimer</a>
+          </li>
+          <li><a href="{{ url_for('main.sitemap') }}">Sitemap</a></li>
+        </ul>
+      </div>
     </footer>
   </body>
 </html>

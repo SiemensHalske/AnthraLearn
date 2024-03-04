@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Courses - AnthraLearn</title>
+    <title>Sitemap - Your Website Name</title>
     <link
       href="{{ url_for('static', filename='css/index_styles.css') }}"
       rel="stylesheet"
@@ -30,24 +30,37 @@
       </nav>
     </header>
 
-    <div class="container">
-      <section id="hero" class="hero">
-        <div class="hero-content">
-          <h1>Courses Offered</h1>
-          <p>Explore our wide range of courses and find your perfect fit.</p>
-          <a href="#" class="btn btn-primary">Browse Courses</a>
-        </div>
-      </section>
-    </div>
+    <main>
+      <section class="sitemap-section">
+        <h1>Sitemap</h1>
+        <p>
+          This sitemap provides an overview of the pages available on our
+          website for easy navigation.
+        </p>
 
-    <section id="course-list" class="features">
-      <!-- Potential course feature blocks -->
-      <!-- Add your course details here following the structure of the feature-container classes -->
-    </section>
+        <!-- Begin Sitemap Content -->
+        <div class="sitemap-container">
+          <ul>
+            <li><a href="{{ url_for('main.home') }}">Home</a></li>
+            <li><a href="{{ url_for('main.about') }}">About Us</a></li>
+            <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
+            <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
+            <li><a href="{{ url_for('main.disclaimer') }}">Disclaimer</a></li>
+            <li><a href="{{ url_for('main.sitemap') }}">Sitemap</a></li>
+            <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+            <li><a href="{{ url_for('main.courses') }}">Courses</a></li>
+            <!-- Auth Pages -->
+            <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+            <li><a href="{{ url_for('auth.signup') }}">Signup</a></li>
+          </ul>
+        </div>
+        <!-- End Sitemap Content -->
+      </section>
+    </main>
 
     <footer>
       <div class="footer-content">
-        <p>&copy; 2024 Hendrik Siemens. All rights reserved.</p>
+        <p>&copy; 2024 Your Company Name. All rights reserved.</p>
         <ul class="footer-links">
           <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
           <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
