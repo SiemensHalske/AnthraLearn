@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1>Welcome to AnthraLearn</h1>
+      <p>Your gateway to limitless learning opportunities</p>
+      <a href="{{ url_for('main.courses') }}" class="btn btn-primary"
+        >Explore Courses</a
+      >
+    </div>
+  </section>
+</div>
+
+<section id="features" class="features">
+  <div class="feature-container">
+    <div class="feature">
+      <h2>Expert Instructors</h2>
+      <p>Learn from industry professionals and subject matter experts</p>
+    </div>
+  </div>
+  <div class="feature-container">
+    <div class="feature">
+      <h2>Interactive Learning</h2>
+      <p>Engage with interactive lessons and quizzes</p>
+    </div>
+  </div>
+  <div class="feature-container">
+    <div class="feature">
+      <h2>Flexible Schedule</h2>
+      <p>Study at your own pace, anytime, anywhere</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -13,3 +13,14 @@ window.onclick = function (event) {
     }
   }
 };
+
+$(document).ready(function(){
+  $("a[href^='#']").click(function(event){
+    event.preventDefault();
+    var page = $(this).attr('href').substring(1);
+    if (page === "") {
+      page = "home";
+    }
+    window.location = "/redirect/" + page;
+  });
+});

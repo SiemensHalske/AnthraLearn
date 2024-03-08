@@ -1,62 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Courses - AnthraLearn</title>
-    <link
-      href="{{ url_for('static', filename='css/index_styles.css') }}"
-      rel="stylesheet"
-    />
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="{{ url_for('main.home') }}">Home</a></li>
-          <li><a href="{{ url_for('main.courses') }}">Courses</a></li>
-          <li><a href="{{ url_for('main.about') }}">About Us</a></li>
-          <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
-        </ul>
-        <div class="user-profile">
-          <a href="javascript:void(0);" onclick="toggleDropdown()">👤</a>
-          <div class="dropdown-content">
-            <a href="#profile">Profile</a>
-            <a href="#settings">Settings</a>
-            <a href="{{ url_for('auth.logout') }}">Logout</a>
-          </div>
-        </div>
-      </nav>
-    </header>
+{% extends "base.html" %}
 
+{% block content %}
     <div class="container">
       <section id="hero" class="hero">
         <div class="hero-content">
           <h1>Courses Offered</h1>
           <p>Explore our wide range of courses and find your perfect fit.</p>
-          <a href="#" class="btn btn-primary">Browse Courses</a>
+          <a href="#" class="btn btn-primary" id="gettoknowus">Browse Courses</a>
         </div>
       </section>
     </div>
 
     <section id="course-list" class="features">
-      <!-- Potential course feature blocks -->
-      <!-- Add your course details here following the structure of the feature-container classes -->
-    </section>
-
-    <footer>
-      <div class="footer-content">
-        <p>&copy; 2024 Hendrik Siemens. All rights reserved.</p>
-        <ul class="footer-links">
-          <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
-          <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
-          <li>
-            <a href="{{ url_for('main.disclaimer') }}">Legal Disclaimer</a>
-          </li>
-          <li><a href="{{ url_for('main.sitemap') }}">Sitemap</a></li>
-        </ul>
+      <div class="feature-container">
+        <h2>Course 1</h2>
+        <p>Description of Course 1</p>
+        <a href="#" class="btn btn-enroll">Enroll Now</a>
       </div>
-    </footer>
-  </body>
-</html>
+      <div class="feature-container">
+        <h2>Course 2</h2>
+        <p>Description of Course 2</p>
+        <a href="#" class="btn btn-enroll">Enroll Now</a>
+      </div>
+      <div class="feature-container">
+        <h2>Course 3</h2>
+        <p>Description of Course 3</p>
+        <a href="#" class="btn btn-enroll">Enroll Now</a>
+      </div>
+    </section>
+{% endblock %}

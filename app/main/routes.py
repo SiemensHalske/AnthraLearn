@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template
-from flask_jwt_extended import get_jwt_identity
-from ..auth.routes import custom_jwt_required
+from flask import Blueprint, render_template, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity, verify_jwt_in_request
+from flask import redirect, url_for
+
+from app.models import User
 
 main_bp = Blueprint('main', __name__)
 
@@ -11,24 +13,27 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/index')
 @main_bp.route('/')
-@custom_jwt_required()
 def home():
-    return render_template('main/index.html', title='Home')
-
-
-@main_bp.route('/about')
-@custom_jwt_required(optional=True)
-def about():
+    # Versucht, den JWT in der Anfrage zu verifizieren
+    verify_jwt_in_request(optional=True)
     current_user = get_jwt_identity()
+    if current_user:
+        print(f'Current User: {current_user}')
+        # Hier könntest du zusätzliche Logik hinzufügen, um das User-Objekt zu laden, etc.
+    else:
+        # Kein Benutzer identifiziert, handle den Fall entsprechend
+        print('No current user')
+
     return render_template(
-        'main/about.html',
-        title='About',
+        'main/index_2.html',
+        title='Home',
+        # Nutze die Identität oder einen Platzhalter
         user=current_user
     )
 
 
 @main_bp.route('/courses')
-@custom_jwt_required()
+@jwt_required()
 def courses():
     current_user = get_jwt_identity()
     return render_template(
@@ -38,14 +43,26 @@ def courses():
     )
 
 
+@main_bp.route('/about')
+def about():
+    verify_jwt_in_request(optional=True)
+    current_user = get_jwt_identity()
+    return render_template(
+        'main/about.html',
+        title='About',
+        user=current_user
+    )
+
+
 @main_bp.route('/contact')
 @main_bp.route('/contact-us')
-@custom_jwt_required(optional=True)
 def contact():
+    verify_jwt_in_request(optional=True)
     current_user = get_jwt_identity()
     return render_template(
         'main/contact.html',
-        title='Contact', user=current_user
+        title='Contact',
+        user=current_user
     )
 
 
@@ -55,41 +72,48 @@ def contact():
 
 
 @main_bp.route('/sitemap')
-@custom_jwt_required(optional=True)
 def sitemap():
-    print('sitemap')
-    current_user = get_jwt_identity()
     return render_template(
         'main/sitemap.html',
-        title='Sitemap', user=current_user
+        title='Sitemap',
     )
 
 
 @main_bp.route('/terms')
-@custom_jwt_required(optional=True)
 def terms():
-    current_user = get_jwt_identity()
     return render_template(
         'main/terms.html',
-        title='Terms', user=current_user
+        title='Terms',
     )
 
 
 @main_bp.route('/privacy')
-@custom_jwt_required(optional=True)
 def privacy():
-    current_user = get_jwt_identity()
     return render_template(
         'main/privacy.html',
-        title='Privacy', user=current_user
+        title='Privacy',
     )
 
 
 @main_bp.route('/disclaimer')
-@custom_jwt_required(optional=True)
 def disclaimer():
-    current_user = get_jwt_identity()
     return render_template(
         'main/disclaimer.html',
-        title='Disclaimer', user=current_user
+        title='Disclaimer',
     )
+
+
+# ================================================================
+# ======================== Routes ================================
+# ================================================================
+
+@main_bp.route('/user_profile', methods=['GET', 'POST'])
+@jwt_required()
+def user_profile():
+    email = get_jwt_identity()
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        return render_template('main/user_profile.html', user=user)
+    else:
+        return redirect(url_for('main.home'))

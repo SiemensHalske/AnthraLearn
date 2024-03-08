@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint
 from flask_wtf import FlaskForm
 from wtforms import (
@@ -8,7 +9,7 @@ from wtforms.validators import DataRequired, Email, Length
 from flask import (
     redirect, render_template, url_for,
     flash, request, jsonify,
-    make_response
+    make_response, current_app
 )
 from wtforms.validators import ValidationError
 from werkzeug.security import (
@@ -16,42 +17,15 @@ from werkzeug.security import (
 )
 from flask_jwt_extended import (
     create_access_token, set_access_cookies,
-    verify_jwt_in_request, unset_jwt_cookies,
-    get_jwt_identity
+    unset_jwt_cookies, jwt_required, get_jwt_identity
 )
-from functools import wraps
+
+from urllib.parse import urlparse, urljoin
 
 from ..models import db, User
 
 
 auth_bp = Blueprint('auth', __name__)
-
-
-def custom_jwt_required(optional=False):
-    def decorator(fn):
-        @wraps(fn)
-        def wrapper(*args, **kwargs):
-            if optional:
-                try:
-                    verify_jwt_in_request(optional=True)
-                    current_user = get_jwt_identity()
-                except Exception as e:
-                    # Falls JWT fehlt oder ungültig ist,
-                    # einfach die Funktion ohne Weiterleitung aufrufen
-                    print('Optional check failed:', e)
-            else:
-                try:
-                    verify_jwt_in_request()
-                    current_user = get_jwt_identity()
-                    print(f'Current user: {current_user}')
-                except Exception as e:
-                    # Wenn JWT fehlt oder ungültig ist,
-                    # leite zur Login-Seite weiter
-                    print('Exception:', e)
-                    return redirect(url_for('auth.login'))
-            return fn(*args, **kwargs)
-        return wrapper
-    return decorator
 
 
 class ComplexPasswordValidator:
@@ -80,24 +54,34 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
 
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+
+
+def redirect_to_next(default='main.home'):
+    next_page = request.args.get('next')
+    # Stelle sicher, dass der Endpunkt existiert und vermeide Open Redirects
+    if next_page and next_page in current_app.url_map._rules_by_endpoint:
+        return redirect(url_for(next_page))
+    return redirect(url_for(default))
+
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         form = LoginForm(request.form)
         if form.validate():
             user = User.query.filter_by(email=form.email.data).first()
-
-            if user and check_password_hash(
-                    user.passwordhash,
-                    form.password.data):
+            if user and check_password_hash(user.passwordhash, form.password.data):
                 access_token = create_access_token(identity=form.email.data)
-
-                # Erstellen Sie eine Antwort und
-                # setzen Sie das access_token-Cookie
                 response = make_response(redirect(url_for('main.home')))
                 set_access_cookies(response, access_token)
+                next_page = request.args.get('next')
+                if next_page and is_safe_url(next_page):
+                    return redirect_to_next()
 
-                # Redirect to main index upon successful login
                 return response
             else:
                 flash('Bad username or password', 'warning')
@@ -109,11 +93,18 @@ def login():
 
 @auth_bp.route('/logout', methods=['GET', 'POST'])
 def logout():
-    response = jsonify({"logout": True})
+    print('Logout request received')
+    response = make_response(redirect(url_for('auth.login')))
     unset_jwt_cookies(response)
+    response.delete_cookie('AnthraLearn_session')
+    # Setze die notwendigen Header, um Caching zu verhindern
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
     return response
 
 
+@auth_bp.route('/register', methods=['GET', 'POST'])
 @auth_bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = RegistrationForm()
@@ -137,3 +128,22 @@ def signup():
         )
 
     return render_template('auth/signup.html', title='Register', form=form)
+
+# ======================================================
+# ===================== ROUTES =========================
+# ======================================================
+
+
+@auth_bp.route('/settings', methods=['GET', 'POST'])
+@jwt_required()
+def settings():
+    # Holen Sie sich die Identität aus dem JWT-Token, die die E-Mail-Adresse sein sollte
+    current_user_email = get_jwt_identity()
+
+    # Suchen Sie nach dem Benutzer in der Datenbank mit der E-Mail-Adresse
+    user = User.query.filter_by(email=current_user_email).first()
+    if user:
+        # Machen Sie etwas mit dem Benutzerobjekt ...
+        return render_template('auth/settings.html', user=user)
+    else:
+        return render_template('auth/settings.html')

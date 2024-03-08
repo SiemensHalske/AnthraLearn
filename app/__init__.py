@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, redirect, url_for, request
 from flask_jwt_extended import JWTManager
 from .main.routes import main_bp
 from .auth.routes import auth_bp
@@ -21,8 +21,8 @@ def create_app():
     # app.config['SERVER_NAME'] = 'AnthraLearn'
     app.config['SESSION_TYPE'] = 'filesystem'
 
-    app.secret_key = os.urandom(24).hex()
-    app.config['SESSION_COOKIE_NAME'] = 'AnthraLearn_session'
+    app.secret_key = os.getenv('SECRET_KEY') or 'dev'
+    app.config['SESSION_COOKIE_NAME'] = 'AnthraLearn'
     app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production
     app.config['SESSION_COOKIE_HTTPONLY'] = True
 
@@ -31,6 +31,8 @@ def create_app():
         jwt_secret_key = certificate.read()
 
     app.config['JWT_COOKIE_SECURE'] = False  # Set to True in production
+    app.config['JWT_TOKEN_DOMAIN'] = 'localhost'
+    app.config['JWT_ACCESS_COOKIE_NAME'] = 'AnthraLearn_session'
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
     app.config['JWT_SECRET_KEY'] = jwt_secret_key
     app.config['JWT_COOKIE_CSRF_PROTECT'] = True  # CSRF protection
@@ -47,5 +49,28 @@ def create_app():
 
     db.init_app(app)
     jwt = JWTManager(app)  # Initialize the JWTManager extension
+
+    @jwt.unauthorized_loader
+    def custom_unauthorized_loader(callback):
+        return redirect(url_for('auth.login', next=request.url))
+
+    @app.route('/redirect/<page>')
+    def redirect_page(page):
+        if page in ['login', 'signup', 'logout', 'settings']:
+            return redirect(url_for('auth.' + page))
+        else:
+            return redirect(url_for('main.' + page))
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return redirect(url_for('main.home')), 404
+
+    @app.errorhandler(500)
+    def method_not_allowed(e):
+        return redirect(url_for('main.home')), 500
+
+    @app.errorhandler(403)
+    def internal_server_error(e):
+        return redirect(url_for('main.home')), 403
 
     return app
