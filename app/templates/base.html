@@ -4,7 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}AnthraLearn{% endblock %}</title>
-    {% block styles %}<link href="{{ url_for('static', filename='css/index_styles.css') }}" rel="stylesheet">{% endblock %}
+    {% block styles %}
+    <link
+      href="{{ url_for('static', filename='css/index_styles.css') }}"
+      rel="stylesheet"
+    />
+    {% endblock %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   </head>
@@ -26,13 +31,14 @@
             >👤</a
           >
           <div class="dropdown-content">
-            {% if user %}
-              <a href="#user_profile">Profile</a>
-              <a href="#settings">Settings</a>
-              <a href="#logout">Logout</a>
-              {% else %}
-              <a href="#login">Login</a>
-              <a href="#signup">Register</a>
+            {% if user.is_user_authenticated %}
+            <a href="#user_profile">Profile</a>
+            <a href="#settings">Settings</a>
+            <a href="#logout">Logout</a>
+            {% else %}
+            <a href="#login">Login</a>
+            <a href="#signup">Register</a>
+            <a href="#settings">Settings</a>
             {% endif %}
           </div>
         </div>

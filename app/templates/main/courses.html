@@ -1,31 +1,106 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block styles %} {{ super() }}
+<style>
+  /* Custom styling */
+  .course-image img {
+    width: 100%; /* Lassen Sie das Bild den Container ausfüllen */
+    height: auto;
+    border-radius: 15px;
+    display: block;
+    margin: auto; /* Zentriert das Bild horizontal */
+    max-width: 200px; /* Legt eine maximale Breite für das Bild fest */
+    box-sizing: border-box;
+  }
 
-{% block content %}
-    <div class="container">
-      <section id="hero" class="hero">
-        <div class="hero-content">
-          <h1>Courses Offered</h1>
-          <p>Explore our wide range of courses and find your perfect fit.</p>
-          <a href="#" class="btn btn-primary" id="gettoknowus">Browse Courses</a>
-        </div>
-      </section>
+  .course-details {
+    font-size: 0.95em;
+    margin: 10px 0;
+  }
+
+  .btn-enroll {
+    background-color: #28a745;
+    border: none;
+    padding: 10px;
+    color: #fff;
+    border-radius: 15px;
+    text-decoration: none;
+    display: block;
+    margin: 10px auto; /* Zentriert den Button horizontal */
+    width: fit-content; /* Passt die Breite des Buttons an den Inhalt an */
+  }
+
+  .btn-enroll:hover {
+    background-color: #218838;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 20px;
+    margin: 0 auto;
+    justify-items: center; /* Stellt sicher, dass die Items im Grid zentriert sind */
+    max-width: 1200px; /* Maximale Breite des containers */
+  }
+
+  .feature-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fffdd0;
+    padding: 10px;
+    border-radius: 15px;
+    margin: 10px;
+    box-sizing: border-box;
+    max-width: 360px; /* Setzt eine maximale Breite für den Container */
+  }
+
+  @media (max-width: 767px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    .features {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 992px) {
+    .features {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container">
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1>Courses Offered</h1>
+      <p>Explore our wide range of courses and find your perfect fit.</p>
+      <a href="#courses" class="btn btn-primary" id="gettoknowus"
+        >Browse Courses</a
+      >
     </div>
+  </section>
 
-    <section id="course-list" class="features">
-      <div class="feature-container">
-        <h2>Course 1</h2>
-        <p>Description of Course 1</p>
-        <a href="#" class="btn btn-enroll">Enroll Now</a>
+  <section id="course-list" class="features">
+    {% for course in courses %}
+    <div class="feature-container">
+      <div class="course-image">
+        <img src="{{ url_for('static', filename=course.image_url) }}" />
       </div>
-      <div class="feature-container">
-        <h2>Course 2</h2>
-        <p>Description of Course 2</p>
-        <a href="#" class="btn btn-enroll">Enroll Now</a>
-      </div>
-      <div class="feature-container">
-        <h2>Course 3</h2>
-        <p>Description of Course 3</p>
-        <a href="#" class="btn btn-enroll">Enroll Now</a>
-      </div>
-    </section>
+      <h2>{{ course.name }}</h2>
+      <p>
+        {{ course.description }} Duration: {{ course.duration }} weeks, Level:
+        {{ course.level }}.
+      </p>
+      <form
+        action="{{ url_for('auth.enroll', courseid=course.courseid) }}"
+        method="POST"
+      >
+        {{ form.hidden_tag() }} {{ form.courseid(value=course.courseid) }}
+        <button type="submit" class="btn btn-enroll">Enroll Now</button>
+      </form>
+    </div>
+    {% endfor %}
+  </section>
+</div>
 {% endblock %}

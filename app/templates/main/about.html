@@ -1,34 +1,52 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  <section id="hero" class="hero">
+    <h1>About AnthraLearn</h1>
+    <p>
+      Discover the synergy of technology and education at AnthraLearn, where
+      innovation meets learning.
+    </p>
+    <a href="#gettoknowus" class="btn btn-primary" id="gettoknowus"
+      >Get to Know Us</a
+    >
+  </section>
 
-{% block content %}
-    <div class="container">
-      <section id="hero" class="hero">
-        <div class="hero-content">
-          <h1>About Us</h1>
-          <p>Learn more about AnthraLearn and our mission.</p>
-          <a href="#" class="btn btn-primary" id="gettoknowus">Get to Know Us</a>
-        </div>
-      </section>
+  <section id="features" class="features">
+    <div class="feature-container">
+      <h2>Our Mission</h2>
+      <p>
+        At AnthraLearn, we are dedicated to empowering learners by providing
+        accessible and intuitive educational technology.<br />
+        With a focus on embedded systems and the transformative potential of AI
+        and ML, we strive to create tools that nurture continuous learning
+        <br />
+        and cater to diverse intellectual pursuits.
+      </p>
+      <hr />
     </div>
 
-    <section id="features" class="features">
-      <div class="feature-container">
-        <div class="feature">
-          <h2>Our Mission</h2>
-          <p>Empowering learners through accessible and engaging education.</p>
-        </div>
-      </div>
-      <div class="feature-container">
-        <div class="feature">
-          <h2>Our Team</h2>
-          <p>Meet the passionate individuals behind AnthraLearn.</p>
-        </div>
-      </div>
-      <div class="feature-container">
-        <div class="feature">
-          <h2>Our Values</h2>
-          <p>Transparency, inclusivity, and lifelong learning.</p>
-        </div>
-      </div>
-    </section>
+    <div class="feature-container">
+      <h2>Our Team</h2>
+      <p>
+        Behind AnthraLearn is a group of passionate individuals, each bringing a
+        unique blend of technical expertise and educational acumen.<br />
+        Led by innovative minds, our team is committed to personal growth and
+        fostering a collaborative environment <br />
+        where resilience and creativity flourish.
+      </p>
+      <hr />
+    </div>
+
+    <div class="feature-container">
+      <h2>Our Values</h2>
+      <p>
+        We uphold values of transparency, inclusivity, and lifelong learning.<br />
+        AnthraLearn champions the ethical application of technology, ensuring
+        our solutions are not just effective <br />
+        but also conscientiously developed with a sustainable mindset.<br />
+        Join us in our journey of self-discovery and communal enlightenment.
+      </p>
+    </div>
+  </section>
+</div>
 {% endblock %}

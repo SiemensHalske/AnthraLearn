@@ -1,0 +1,128 @@
+{% extends "base.html" %} {% block styles %} {{ super() }}
+<style>
+  /* Wiederverwendeter individueller Stil von courses.html mit Anpassungen */
+  .enrollment-failed {
+    background: rgba(0, 0, 81, 0.3); /* Transparent dark blue background */
+    color: #fffdd0;
+    text-align: center; /* Center the entire content */
+    padding: 50px 20px; /* Additional spacing inside */
+    max-width: 800px;
+    margin: 0 auto; /* Center horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    margin: 30px auto;
+  }
+
+  .enrollment-failed .course-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    display: block;
+    margin: 20px auto;
+    max-width: 200px;
+    box-sizing: border-box;
+  }
+
+  .enrollment-failed h2 {
+    color: #28a745; /* Grün zur Darstellung des Erfolgs */
+    background: rgba(0, 0, 81, 0.7); /* Transparent dark blue background */
+    border: 2px solid red;
+    margin: 24px 0;
+    padding: 24px;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 15px;
+  }
+
+  .enrollment-failed p {
+    font-size: 1.1em;
+    color: #fffdd0;
+  }
+
+  .btn-contact-support {
+    background-color: #17a2b8;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 15px;
+    text-decoration: none;
+    display: block;
+    margin: 30px auto;
+    width: fit-content;
+    font-size: 16px;
+    transition: all 0.1s ease; /* Add a smooth color transition */
+  }
+
+  .btn-contact-support:hover {
+    background-color: #0044cc;
+    font-size: 18px; /* Enlarge the button on hover */
+  }
+
+  blockquote {
+    background: rgba(0, 128, 128, 0.5); /* Transparent teal background */
+    color: #fff;
+    border: 5px solid #cc0000;
+    margin: 24px 0;
+    padding: 24px;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 15px;
+  }
+
+  #contact_support {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #btn-lnk1 {
+    margin-right: 10px;
+  }
+
+  #btn-lnk2 {
+    margin-left: 10px;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container">
+  <div class="enrollment-failed">
+    <div class="course-image">
+      <!-- Pfad zum Bild anpassen, je nachdem, was für ein Fehlerbild verwendet werden soll -->
+      <img
+        src="{{ url_for('static', filename='images/courses/course1.png') }}"
+        alt="Course"
+      />
+    </div>
+    <h2>Enrollment Failed</h2>
+    <p>
+      We're sorry, but your enrollment could not be processed due to the
+      following reason:
+    </p>
+    <blockquote>{{ reason }}</blockquote>
+    <!-- zeigt den übergebenen Grund an -->
+    <p>Please try again or contact support if the problem persists.</p>
+
+    <!-- E-Mail oder Kontaktseite für den Support abhängig von der tatsächlichen URL -->
+    <li class="#contact" id="contact_support">
+      <a
+        href="{{ url_for('main.contact') }}"
+        class="btn-contact-support"
+        id="btn-lnk1"
+      >
+        > Contact Support</a
+      >
+      <a
+        href="{{ url_for('main.courses') }}"
+        class="btn-contact-support"
+        id="btn-lnk2"
+      >
+        > Back to Courses</a
+      >
+    </li>
+  </div>
+  {% endblock %}
+</div>

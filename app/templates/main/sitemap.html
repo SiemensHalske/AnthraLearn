@@ -1,31 +1,29 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
+<main>
+  <section class="sitemap-section">
+    <h1>Sitemap</h1>
+    <p>
+      This sitemap provides an overview of the pages available on our website
+      for easy navigation.
+    </p>
 
-{% block content %}
-    <main>
-      <section class="sitemap-section">
-        <h1>Sitemap</h1>
-        <p>
-          This sitemap provides an overview of the pages available on our
-          website for easy navigation.
-        </p>
-
-        <!-- Begin Sitemap Content -->
-        <div class="sitemap-container">
-          <ul>
-            <li><a href="{{ url_for('main.home') }}">Home</a></li>
-            <li><a href="{{ url_for('main.about') }}">About Us</a></li>
-            <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
-            <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
-            <li><a href="{{ url_for('main.disclaimer') }}">Disclaimer</a></li>
-            <li><a href="{{ url_for('main.sitemap') }}">Sitemap</a></li>
-            <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
-            <li><a href="{{ url_for('main.courses') }}">Courses</a></li>
-            <!-- Auth Pages -->
-            <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-            <li><a href="{{ url_for('auth.signup') }}">Signup</a></li>
-          </ul>
-        </div>
-        <!-- End Sitemap Content -->
-      </section>
-    </main>
+    <!-- Begin Sitemap Content -->
+    <div class="sitemap-container">
+      <ul>
+        <li><a href="{{ url_for('main.home') }}">Home</a></li>
+        <li><a href="{{ url_for('main.about') }}">About Us</a></li>
+        <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
+        <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
+        <li><a href="{{ url_for('main.disclaimer') }}">Disclaimer</a></li>
+        <li><a href="{{ url_for('main.sitemap') }}">Sitemap</a></li>
+        <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
+        <li><a href="{{ url_for('main.courses') }}">Courses</a></li>
+        <!-- Auth Pages -->
+        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+        <li><a href="{{ url_for('auth.signup') }}">Signup</a></li>
+      </ul>
+    </div>
+    <!-- End Sitemap Content -->
+  </section>
+</main>
 {% endblock %}

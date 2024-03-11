@@ -1,73 +1,71 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
+<main>
+  <section class="privacy-policy">
+    <h1>Privacy Policy</h1>
+    <p>Last updated: 05/03/2024</p>
 
-{% block content %}
-    <main>
-      <section class="privacy-policy">
-        <h1>Privacy Policy</h1>
-        <p>Last updated: 05/03/2024</p>
+    <!-- Begin Privacy Policy Content -->
+    <article>
+      <h2>Introduction</h2>
+      <p>
+        Welcome to AnthraLearn's Privacy Policy. This policy outlines how we
+        collect, use, share, and protect your personal information when you use
+        our learning platform.
+      </p>
 
-        <!-- Begin Privacy Policy Content -->
-        <article>
-          <h2>Introduction</h2>
-          <p>
-            Welcome to AnthraLearn's Privacy Policy. This policy outlines how we
-            collect, use, share, and protect your personal information when you
-            use our learning platform.
-          </p>
+      <h2>1. Information Collection</h2>
+      <p>
+        We collect information that you provide directly to us when you register
+        for an account, enroll in courses, or interact with our platform. This
+        may include your name, email address, payment information, and other
+        details.
+      </p>
 
-          <h2>1. Information Collection</h2>
-          <p>
-            We collect information that you provide directly to us when you
-            register for an account, enroll in courses, or interact with our
-            platform. This may include your name, email address, payment
-            information, and other details.
-          </p>
+      <h2>2. Use of Information</h2>
+      <p>
+        The information we collect is used to provide and improve our services,
+        personalize your learning experience, communicate with you, and ensure
+        the security of our platform.
+      </p>
 
-          <h2>2. Use of Information</h2>
-          <p>
-            The information we collect is used to provide and improve our
-            services, personalize your learning experience, communicate with
-            you, and ensure the security of our platform.
-          </p>
+      <h2>3. Information Sharing and Disclosure</h2>
+      <p>
+        We may share your information with third-party service providers who
+        assist us in operating our platform, conducting our business, or
+        servicing you. We may also disclose your information in response to
+        legal requests or to protect our rights and interests.
+      </p>
 
-          <h2>3. Information Sharing and Disclosure</h2>
-          <p>
-            We may share your information with third-party service providers who
-            assist us in operating our platform, conducting our business, or
-            servicing you. We may also disclose your information in response to
-            legal requests or to protect our rights and interests.
-          </p>
+      <h2>4. Your Rights and Choices</h2>
+      <p>
+        You have the right to access, correct, or delete your personal
+        information. You can also choose to opt out of certain data collection
+        and marketing communications.
+      </p>
 
-          <h2>4. Your Rights and Choices</h2>
-          <p>
-            You have the right to access, correct, or delete your personal
-            information. You can also choose to opt out of certain data
-            collection and marketing communications.
-          </p>
+      <h2>5. Data Security</h2>
+      <p>
+        We implement security measures to protect your personal information from
+        unauthorized access, alteration, disclosure, or destruction. However, no
+        method of transmission over the internet or electronic storage is 100%
+        secure.
+      </p>
 
-          <h2>5. Data Security</h2>
-          <p>
-            We implement security measures to protect your personal information
-            from unauthorized access, alteration, disclosure, or destruction.
-            However, no method of transmission over the internet or electronic
-            storage is 100% secure.
-          </p>
+      <h2>6. International Data Transfers</h2>
+      <p>
+        Your information may be transferred to and maintained on computers
+        located outside of your state, province, country, or other governmental
+        jurisdiction where the data protection laws may differ from those of
+        your jurisdiction.
+      </p>
 
-          <h2>6. International Data Transfers</h2>
-          <p>
-            Your information may be transferred to and maintained on computers
-            located outside of your state, province, country, or other
-            governmental jurisdiction where the data protection laws may differ
-            from those of your jurisdiction.
-          </p>
-
-          <h2>Contact Us</h2>
-          <p>
-            If you have any questions or concerns about this Privacy Policy,
-            please <a href="{{ url_for('main.contact') }}">contact us</a>.
-          </p>
-        </article>
-        <!-- End Privacy Policy Content -->
-      </section>
-    </main>
+      <h2>Contact Us</h2>
+      <p>
+        If you have any questions or concerns about this Privacy Policy, please
+        <a href="{{ url_for('main.contact') }}">contact us</a>.
+      </p>
+    </article>
+    <!-- End Privacy Policy Content -->
+  </section>
+</main>
 {% endblock %}

@@ -1,43 +1,37 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
+<main>
+  <section class="disclaimer-section">
+    <h1>Disclaimer</h1>
+    <p>Last updated: [insert last update date]</p>
 
-{% block content %}
-    <main>
-      <section class="disclaimer-section">
-        <h1>Disclaimer</h1>
-        <p>Last updated: [insert last update date]</p>
+    <!-- Begin Disclaimer Content -->
+    <article>
+      <h2>Website Content</h2>
+      <p>[Insert general disclaimer about the content on your website ...]</p>
 
-        <!-- Begin Disclaimer Content -->
-        <article>
-          <h2>Website Content</h2>
-          <p>
-            [Insert general disclaimer about the content on your website ...]
-          </p>
+      <h2>External Links</h2>
+      <p>[Disclaimer regarding external links and third-party content ...]</p>
 
-          <h2>External Links</h2>
-          <p>
-            [Disclaimer regarding external links and third-party content ...]
-          </p>
+      <h2>No Endorsements</h2>
+      <p>
+        [Statement that inclusion of any services or products does not
+        constitute endorsement ...]
+      </p>
 
-          <h2>No Endorsements</h2>
-          <p>
-            [Statement that inclusion of any services or products does not
-            constitute endorsement ...]
-          </p>
+      <h2>Personal Responsibility</h2>
+      <p>
+        [Clause that users take responsibility for how they use the information
+        provided ...]
+      </p>
 
-          <h2>Personal Responsibility</h2>
-          <p>
-            [Clause that users take responsibility for how they use the
-            information provided ...]
-          </p>
-
-          <h2>Contact Information</h2>
-          <p>
-            If you require any more information or have any questions about our
-            site's disclaimer, please feel free to contact us by email at
-            [insert contact email].
-          </p>
-        </article>
-        <!-- End Disclaimer Content -->
-      </section>
-    </main>
+      <h2>Contact Information</h2>
+      <p>
+        If you require any more information or have any questions about our
+        site's disclaimer, please feel free to contact us by email at [insert
+        contact email].
+      </p>
+    </article>
+    <!-- End Disclaimer Content -->
+  </section>
+</main>
 {% endblock %}
