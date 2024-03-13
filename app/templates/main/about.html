@@ -1,4 +1,72 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block styles %} {{ super() }}
+<style>
+  .hero {
+    position: relative; /* Ermöglicht die Positionierung des Pseudo-Elements */
+    padding: 30px 0;
+    text-align: center;
+    color: #ffffff;
+    max-width: 800px;
+  }
+
+  .hero::before {
+    content: ""; /* Notwendig, um das Pseudo-Element anzuzeigen */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/static/images/banner/index_banner_3.webp");
+    background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+    background-size: cover;
+    background-position: center; /* Zentriert das Bild */
+    opacity: 0.5; /* Setzt die Opazität des Bildes */
+    z-index: -1; /* Stellt sicher, dass das Bild hinter dem Text liegt */
+    border-radius: 15px; /* Abgerundete Ecken */
+  }
+
+  .hero h1 {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background: -webkit-linear-gradient(45deg, #a1c4fd, #c2e9fb);
+    background-clip: text;
+
+    font-size: 48px; /* Größere Schriftgröße für die Überschrift */
+    line-height: 1.1;
+  }
+
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+  }
+
+  .feature-container {
+    flex: 1 1 250px; /* Erlaubt den Containern zu wachsen und zu schrumpfen, aber nicht kleiner als 250px zu werden */
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc; /* Ersatz für deine <hr>, eine 2px solide Linie */
+    padding-bottom: 10px; /* Abstand zwischen Text und Linie */
+    border-radius: 15px; /* Damit es sich nicht mit den Ecken überschneidet */
+    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Fügt einen Schlagschatten hinzu */
+    overflow: hidden; /* Verhindert, dass der Inhalt oder Rahmen über die abgerundeten Ecken hinausgeht */
+  }
+
+  @media (min-width: 768px) {
+    .feature-container {
+      /* Vergrößert die min-width für größere Bildschirme */
+      flex: 1 1 300px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .feature-container {
+      /* Noch breitere min-width für noch größere Bildschirme */
+      flex: 1 1 450px;
+    }
+  }
+</style>
+{% endblock %} {%block content %}
 <div class="container">
   <section id="hero" class="hero">
     <h1>About AnthraLearn</h1>
@@ -22,7 +90,6 @@
         <br />
         and cater to diverse intellectual pursuits.
       </p>
-      <hr />
     </div>
 
     <div class="feature-container">
@@ -34,7 +101,6 @@
         fostering a collaborative environment <br />
         where resilience and creativity flourish.
       </p>
-      <hr />
     </div>
 
     <div class="feature-container">
@@ -45,6 +111,15 @@
         our solutions are not just effective <br />
         but also conscientiously developed with a sustainable mindset.<br />
         Join us in our journey of self-discovery and communal enlightenment.
+      </p>
+    </div>
+    <div class="feature-container">
+      <h2>Our Impact</h2>
+      <p>
+        AnthraLearn is not just about courses, it’s about creating an impact. We
+        believe in technology’s power to transform lives and industries.<br />
+        Our learners go on to do remarkable things, making a difference in their
+        communities and the world at large.
       </p>
     </div>
   </section>

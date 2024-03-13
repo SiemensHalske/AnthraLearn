@@ -1,4 +1,59 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {%block styles%} {{ super() }}
+<style>
+  .hero {
+    position: relative; /* Ermöglicht die Positionierung des Pseudo-Elements */
+    padding: 30px 0;
+    text-align: center;
+    color: #ffffff;
+    max-width: 800px;
+  }
+
+  .hero::before {
+    content: ""; /* Notwendig, um das Pseudo-Element anzuzeigen */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/static/images/banner/index_banner_3.webp");
+    background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+    background-size: cover;
+    background-position: center; /* Zentriert das Bild */
+    opacity: 0.5; /* Setzt die Opazität des Bildes */
+    z-index: -1; /* Stellt sicher, dass das Bild hinter dem Text liegt */
+    border-radius: 15px; /* Abgerundete Ecken */
+  }
+
+  .hero h1 {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background: -webkit-linear-gradient(45deg, #a1c4fd, #c2e9fb);
+    background-clip: text;
+
+    font-size: 48px; /* Größere Schriftgröße für die Überschrift */
+    line-height: 1.1;
+  }
+
+  .features {
+    display: flex;
+    flex-wrap: wrap; /* Erlaubt den Items, in die nächste Zeile zu rücken, wenn nicht genug Platz vorhanden ist */
+    justify-content: center; /* Zentriert die Items horizontal */
+    gap: 20px; /* Fügt ein wenig Platz zwischen den Items hinzu */
+    margin-top: 30px; /* Etwas Abstand zum Hero-Container oben */
+  }
+
+  .feature-container {
+    flex: 1 1 200px; /* Erlaubt den Items zu wachsen und schrumpfen, aber nicht kleiner als 200px zu werden */
+    max-width: calc(25% - 20px); /* Setzt die maximale Breite jedes Containers auf 25% des Eltern-Containers minus den gap */
+    text-align: center; /* Stellt sicher, dass der Inhalt jedes Features zentriert ist */
+    display: flex; /* Aktiviert Flexbox für den Innenbereich */
+    flex-direction: column; /* Ordnet die inneren Elemente vertikal an */
+    align-items: center; /* Zentriert die inneren Elemente horizontal */
+    justify-content: center; /* Zentriert die inneren Elemente vertikal */
+  }
+</style>
+
+{%endblock%} {% block content %}
 <div class="container">
   <section id="hero" class="hero">
     <div class="hero-content">
@@ -36,5 +91,12 @@
       </p>
     </div>
   </div>
+  <div class="feature-container">
+    <div class="feature">
+      <h2>Working Hours</h2>
+      <p>
+        We're available from 8:00 am - 4:30 pm, Monday through Friday.
+      </p>
+    </div>
 </section>
 {% endblock %}

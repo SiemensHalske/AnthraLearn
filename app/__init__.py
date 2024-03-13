@@ -1,13 +1,22 @@
 import os
-from flask import Flask, redirect, url_for, request
-from flask_jwt_extended import JWTManager, verify_jwt_in_request
-from functools import wraps
+from flask import Flask, redirect, url_for, request, jsonify
+from flask_jwt_extended import (
+    JWTManager, jwt_required,
+    create_access_token, get_jwt_identity,
+)
 
 from .main.routes import main_bp
 from .auth.routes import auth_bp
 from .models import db
 
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 def create_app():
+    clear_screen()
+
     app = Flask('AnthraLearn')
     app.template_folder = 'app\\templates'
     app.static_folder = 'app\\static'
@@ -30,12 +39,12 @@ def create_app():
     jwt_secret_key = None
     with open('app\\jwt_key.cert', 'r', encoding='utf-8') as certificate:
         jwt_secret_key = certificate.read()
+    app.config['JWT_SECRET_KEY'] = jwt_secret_key
 
     app.config['JWT_COOKIE_SECURE'] = False  # Set to True in production
     app.config['JWT_TOKEN_DOMAIN'] = 'localhost'
     app.config['JWT_ACCESS_COOKIE_NAME'] = 'AnthraLearn_session'
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-    app.config['JWT_SECRET_KEY'] = jwt_secret_key
     app.config['JWT_COOKIE_CSRF_PROTECT'] = False
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
 
@@ -55,6 +64,13 @@ def create_app():
     @jwt.unauthorized_loader
     def custom_unauthorized_loader(callback):
         return redirect(url_for('auth.login', next=request.url))
+
+    @app.route('/token/refresh', methods=['POST'])
+    @jwt_required(refresh=True)
+    def refresh():
+        current_user = get_jwt_identity()
+        new_access_token = create_access_token(identity=current_user)
+        return jsonify(access_token=new_access_token)
 
     @app.route('/redirect/<page>')
     def redirect_page(page):

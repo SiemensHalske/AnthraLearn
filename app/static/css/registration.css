@@ -109,8 +109,12 @@ header nav {
 
 :root {
   --btn-font-size: 20px; /* Basis-Schriftgröße für den Button */
-  --btn-padding-vertical: calc(var(--btn-font-size) / 2); /* Vertikales Padding basierend auf der Schriftgröße */
-  --btn-padding-horizontal: calc(var(--btn-font-size) * 5); /* Horizontales Padding basierend auf der Schriftgröße */
+  --btn-padding-vertical: calc(
+    var(--btn-font-size) / 2
+  ); /* Vertikales Padding basierend auf der Schriftgröße */
+  --btn-padding-horizontal: calc(
+    var(--btn-font-size) * 5
+  ); /* Horizontales Padding basierend auf der Schriftgröße */
 }
 
 .btn-primary {
@@ -132,7 +136,6 @@ header nav {
     width: 90%; /* Mehr Platz auf kleineren Geräten */
   }
 }
-
 
 .feature {
   max-width: 1200px;
@@ -282,6 +285,10 @@ footer .footer-links li a:hover {
   max-width: 500px; /* oder die Breite, die du bevorzugst */
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  justify-content: center; /* Zentriert den Button horizontal */
+  flex-direction: column; /* Stellt sicher, dass die Buttons untereinander stehen */
+  align-items: center; /* Zentriert die Elemente horizontal */
 }
 
 .form-label,
@@ -300,20 +307,78 @@ footer .footer-links li a:hover {
   margin-bottom: 15px; /* Erhöht den Abstand zum nächsten Element der Gruppe */
 }
 
-#login-text {
-  color: #ffffff; /* Ändert die Textfarbe */
-  margin-top: 20px; /* Fügt einen oberen Rand hinzu */
-  font-size: 20px; /* Ändert die Schriftgröße */
-  font-weight: normal; /* Setzt die Schriftstärke */
-  text-align: center; /* Zentriert den Text */
+/* Container für die Buttons */
+.cbtn-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap; /* Sorgt dafür, dass die Buttons umfließen, falls der Platz zu eng wird */
+  margin-top: 30px; /* Fügt Abstand oberhalb des Button-Containers hinzu */
+  width: 100%; /* Nimmt die volle Breite der verfügbaren Breite ein */
 }
 
-#login-text a {
-  color: #1e90ff; /* Farbe für Links */
-  text-decoration: none; /* Entfernt die Unterstreichung von Links */
+/* Stile für die benutzerdefinierten Buttons mit Gradienten-Hintergrund */
+.cbtn a {
+  padding: 10px 20px;
+  background-image: linear-gradient(
+    45deg,
+    #5d3fd3,
+    #a1c4fd
+  ); /* Gradienten-Farben */
+  color: #fff;
+  border-radius: 15px;
+  text-decoration: none;
+  font-size: 18px;
+  transition: all 0.3s ease; /* Übergang für alle Eigenschaften, einschließlich Hintergrund */
+  text-align: center;
 }
 
-#login-text a:hover {
-  color: #0056b3; /* Farbe für Links beim Darüberfahren mit der Maus */
-  text-decoration: underline; /* Fügt eine Unterstreichung beim Darüberfahren hinzu */
+.cbtn a:hover {
+  background-image: linear-gradient(
+    45deg,
+    #7a52d9,
+    #bac8ff
+  ); /* Hellere Gradienten-Farben für Hover */
+  color: #e0d0ff;
+}
+
+/* Stile für spezifische Buttons, falls nötig */
+.cbtn.btn-0 a {
+  background-image: linear-gradient(
+    45deg,
+    #f3e7e9,
+    #e0d0ff
+  ); /* Spezieller Gradient für den "Register" Button */
+}
+
+.cbtn.btn-2 a {
+  background-image: linear-gradient(
+    45deg,
+    #5d3fd3,
+    #f3e7e9
+  ); /* Spezieller Gradient für den "Überspringen" Button */
+  color: #1a1a1a;
+}
+
+.cbtn.btn-3 a {
+  background-image: linear-gradient(
+    45deg,
+    #a1c4fd,
+    #ffffff
+  ); /* Spezieller Gradient für den Login-Link */
+  color: #333;
+}
+
+.cbtn.btn-3 a:hover {
+  background-image: linear-gradient(
+    45deg,
+    #bac8ff,
+    #ffffff
+  ); /* Hellere Gradienten-Farben für Hover beim Login-Link */
+  color: #1a1a1a;
+}
+
+#register-button {
+  margin-bottom: 20px; /* Fügt unterhalb des Buttons zusätzlichen Abstand hinzu */
+  font-size: 20px;
 }

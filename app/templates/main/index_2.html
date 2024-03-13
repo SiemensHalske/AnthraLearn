@@ -3,10 +3,37 @@
 <style>
   /* Hero Bereich mit einem edlen Lila-bis-Dunkelblau-Verlauf */
   .hero {
-    background: rgba(0, 0, 81, 0.3); /* Transparent dark blue background */
-    padding: 50px 0;
+    position: relative; /* Ermöglicht die Positionierung des Pseudo-Elements */
+    padding: 30px 0;
     text-align: center;
-    color: #ffffff; /* Helle Textfarbe für Kontrast */
+    color: #ffffff;
+    max-width: 800px;
+  }
+
+  .hero::before {
+    content: ""; /* Notwendig, um das Pseudo-Element anzuzeigen */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/static/images/banner/index_banner_3.webp");
+    background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+    background-size: cover;
+    background-position: center; /* Zentriert das Bild */
+    opacity: 0.5; /* Setzt die Opazität des Bildes */
+    z-index: -1; /* Stellt sicher, dass das Bild hinter dem Text liegt */
+    border-radius: 15px; /* Abgerundete Ecken */
+  }
+
+  .hero h1 {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background: -webkit-linear-gradient(45deg, #a1c4fd, #c2e9fb);
+    background-clip: text;
+
+    font-size: 48px; /* Größere Schriftgröße für die Überschrift */
+    line-height: 1.1;
   }
 
   /* Feature-Icons Stil */
@@ -27,6 +54,7 @@
     max-width: 400px;
     flex: 0 1 auto; /* Erlaubt den Boxen zu schrumpfen und zu wachsen, aber fängt mit keineränderung basierend auf dem Inhalt an */
   }
+
   /* Anpassungen für mobile Endgeräte */
   @media (max-width: 768px) {
     .hero {
@@ -41,17 +69,34 @@
       width: 50px; /* Kleinere Icons auf Mobilgeräten */
     }
   }
+
+  .explore-course-btn {
+    background-color: #f5555f;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 15px;
+    text-decoration: none;
+    display: inline-block;
+    width: fit-content;
+    font-size: 18px;
+  }
 </style>
 
 {% endblock %} {% block content %}
 <div class="container">
   <section id="hero" class="hero">
     <div class="hero-content">
-      <h1>Welcome to AnthraLearn</h1>
+      <h1>AnthraLearn</h1>
       <p>Your gateway to limitless learning opportunities</p>
-      <a href="{{ url_for('main.courses') }}" class="btn btn-primary"
+      <a href="{{ url_for('main.courses') }}" class="explore-course-btn"
         >Explore Courses</a
       >
+      <div id="refresh-token-container">
+        <button id="refresh-token-button" onclick="refreshTokenAndRetryRequest()">
+          Refresh Token
+        </button>
+      </div>
     </div>
   </section>
 

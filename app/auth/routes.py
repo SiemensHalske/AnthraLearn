@@ -3,7 +3,7 @@ from flask import Blueprint
 from flask import (
     redirect, render_template, url_for,
     flash, request, make_response,
-    current_app
+    current_app, session
 )
 from werkzeug.security import (
     generate_password_hash, check_password_hash
@@ -11,7 +11,8 @@ from werkzeug.security import (
 from flask_jwt_extended import (
     create_access_token, set_access_cookies,
     unset_jwt_cookies, verify_jwt_in_request,
-    get_jwt_identity, jwt_required
+    get_jwt_identity, create_refresh_token,
+    set_refresh_cookies
 )
 
 from urllib.parse import urlparse, urljoin
@@ -70,8 +71,10 @@ def login():
                     return redirect(url_for('auth.login'))
 
                 access_token = create_access_token(identity=form.email.data)
+                refresh_token = create_refresh_token(identity=form.email.data)
                 response = make_response(redirect(url_for('main.home')))
                 set_access_cookies(response, access_token)
+                set_refresh_cookies(response, refresh_token)
                 next_page = request.args.get('next')
                 if next_page and is_safe_url(next_page):
                     return redirect_to_next()
@@ -127,7 +130,12 @@ def signup():
             'danger'
         )
 
-    return render_template('auth/signup.html', title='Register', form=form)
+    return render_template(
+        'auth/signup.html',
+        title='Register',
+        form=form,
+        user=None
+    )
 
 # ======================================================
 # ===================== ROUTES =========================
@@ -154,64 +162,49 @@ def settings():
 @auth_bp.route('/enroll/<int:courseid>', methods=['GET', 'POST'])
 def enroll(courseid):
     def failed(courseid: int, userid: str, reason: str):
-        if userid is None:
-            userid = ''
+        session['courseid'] = courseid
+        session['userid'] = userid
+        session['reason'] = reason
+
         return redirect(
             url_for(
-                'auth.enrollment_failed',
-                courseid=courseid,
-                userid=userid,
-                reason=reason
+                'auth.enrollment_failed'
             )
         )
 
-    # Check session and request header
-    print('\n'*5)
-    print(f'request: {request}')
-    print(f'form: {request.form}')
-    print(f'args: {request.args}')
-    print(f'headers: {request.headers}')
-    print(f'cookies: {request.cookies}')
-    print(f'Authorization: {request.headers.get("Authorization")}')
-    print('\n'*5)
-
     verify_jwt_in_request()
     user_id = get_jwt_identity()
-    user = None
+    user = User.query.filter_by(email=user_id).first()
 
-    form = EnrollmentForm(courseid=courseid)
+    form = EnrollmentForm(courseid=courseid, user=user)
     if form.validate_on_submit():
 
-        print(f'user: {user}')
+        print(f'Uuuuuuuuuuser: {user}')
 
         course = Course.query.get(courseid)
         if not course:
-            return failed(courseid, user_id, 'course_not_found')
+            return failed(
+                courseid,
+                user_id,
+                'Course does not exist'
+            )
 
         # Check if user is alread in CourseEnrollment
         if CourseEnrollment.query.filter_by(
             courseid=courseid,
             userid=user_id
         ).count() > 0:
-            return failed(courseid, user_id, 'already_enrolled')
-
-        print('\n'*3)
-        print(f'user: {user_id}')
-        print(f'course: {courseid}')
-        print('\n'*3)
-
-        user = User.query.filter_by(email=user_id).first()
-
-        print('\n'*3)
-        print(f'user: {user_id}')
-        print(f'course: {course}')
-        print('\n'*3)
+            return failed(
+                courseid,
+                user_id,
+                'You are already in this course'
+            )
 
         if not user or not course:
             return failed(
                 courseid=courseid,
                 userid=user_id,
-                reason='user_or_course_not_found'
+                reason='User or Course does not exist'
             )
 
         try:
@@ -224,7 +217,11 @@ def enroll(courseid):
             db.session.commit()
         except Exception as e:
             print(f'Could not add user to course: {e}')
-            return failed(courseid, user_id, 'could_not_add_user')
+            return failed(
+                courseid,
+                user_id,
+                'Could not add user to course'
+            )
 
         return redirect(
             url_for(
@@ -243,7 +240,6 @@ def enroll(courseid):
         user = None
 
     reason = 'You are not logged in!'
-
     return render_template(
         'main/enroll.html',
         form=form,
@@ -253,10 +249,20 @@ def enroll(courseid):
     )
 
 
-@auth_bp.route(
-    '/enrollment_failed/<int:courseid>/<string:userid>/<string:reason>')
-def enrollment_failed(courseid: int, userid: str, reason: str):
+@auth_bp.route('/enrollment_failed', methods=['GET', 'POST'])
+def enrollment_failed():
+    courseid = session.get('courseid')
+    userid = session.get('userid')
+    reason = session.get('reason')
+
+    # Bereinige die Session nach dem Zugriff,
+    # um die Daten nicht länger als nötig zu halten
+    session.pop('courseid', None)
+    session.pop('userid', None)
+    session.pop('reason', None)
+
     user = User.query.filter_by(email=userid).first()
+
     return render_template(
         'main/enrollment_failed.html',
         course_id=courseid,
@@ -265,12 +271,21 @@ def enrollment_failed(courseid: int, userid: str, reason: str):
     )
 
 
-@auth_bp.route(
-    '/enrollment_success/<int:courseid>/<string:userid>/<string:reason>')
-def enrollment_success(courseid: int, userid: str, reason: str):
+@auth_bp.route('/enrollment_success', methods=['GET', 'POST'])
+def enrollment_success():
+    courseid = request.args.get('courseid')
+    userid = request.args.get('userid')
+    reason = request.args.get('reason')
+
+    session.pop('courseid', None)
+    session.pop('userid', None)
+    session.pop('reason', None)
+
     user = User.query.filter_by(email=userid).first()
+
     return render_template(
         'main/enrollment_success.html',
         course_id=courseid,
         user=user,
+        reason=reason
     )

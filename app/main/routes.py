@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, render_template, request
+    Blueprint, render_template
 )
 from flask_jwt_extended import (
     get_jwt_identity, verify_jwt_in_request
@@ -73,12 +73,21 @@ def courses():
 
     user = User.query.filter_by(email=current_user).first()
 
+    form = EnrollmentForm(courseid=None, user=user)
     courses = Course.query.all()
-    form = EnrollmentForm(courseid=None)
+    if not user:
+        return render_template(
+            'main/courses.html',
+            title='Courses',
+            courses=courses,
+            user=None,
+            form=form
+        )
+
     return render_template(
         'main/courses.html',
         title='Courses',
-        user=user if user else None,
+        user=user,
         courses=courses,
         form=form
     )
@@ -124,33 +133,57 @@ def gettoknowus():
 
 @main_bp.route('/sitemap')
 def sitemap():
+    verify_jwt_in_request(optional=True)
+    current_user = get_jwt_identity()
+
+    user = User.query.filter_by(email=current_user).first()
+
     return render_template(
         'main/sitemap.html',
         title='Sitemap',
+        user=user
     )
 
 
 @main_bp.route('/terms')
 def terms():
+    verify_jwt_in_request(optional=True)
+    current_user = get_jwt_identity()
+
+    user = User.query.filter_by(email=current_user).first()
+
     return render_template(
         'main/terms.html',
         title='Terms',
+        user=user
     )
 
 
 @main_bp.route('/privacy')
 def privacy():
+    verify_jwt_in_request(optional=True)
+    current_user = get_jwt_identity()
+
+    user = User.query.filter_by(email=current_user).first()
+
     return render_template(
         'main/privacy.html',
         title='Privacy',
+        user=user
     )
 
 
 @main_bp.route('/disclaimer')
 def disclaimer():
+    verify_jwt_in_request(optional=True)
+    current_user = get_jwt_identity()
+
+    user = User.query.filter_by(email=current_user).first()
+
     return render_template(
         'main/disclaimer.html',
         title='Disclaimer',
+        user=user
     )
 
 
