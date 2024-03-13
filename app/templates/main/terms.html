@@ -1,86 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact - AnthraLearn</title>
-    <link
-      href="{{ url_for('static', filename='css/index_styles.css') }}"
-      rel="stylesheet"
-    />
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="{{ url_for('main.home') }}">Home</a></li>
-          <li><a href="{{ url_for('main.courses') }}">Courses</a></li>
-          <li><a href="{{ url_for('main.about') }}">About Us</a></li>
-          <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
-        </ul>
-        <div class="user-profile">
-          <a href="javascript:void(0);" onclick="toggleDropdown()">👤</a>
-          <div class="dropdown-content">
-            <a href="#profile">Profile</a>
-            <a href="#settings">Settings</a>
-            <a href="{{ url_for('auth.logout') }}">Logout</a>
-          </div>
-        </div>
-      </nav>
-    </header>
+{% extends "base.html" %} {% block content %}
+<main>
+  <section class="terms-of-service">
+    <h1>Terms of Service</h1>
+    <p>Last updated: [insert last update date]</p>
 
-    <main>
-      <section class="terms-of-service">
-        <h1>Terms of Service</h1>
-        <p>Last updated: [insert last update date]</p>
+    <!-- Begin Terms of Service -->
+    <article>
+      <h2>Introduction</h2>
+      <p>[Insert introduction to the terms of service here ...]</p>
 
-        <!-- Begin Terms of Service -->
-        <article>
-          <h2>Introduction</h2>
-          <p>[Insert introduction to the terms of service here ...]</p>
+      <h2>1. Acceptance of Terms</h2>
+      <p>[Detail about acceptance of terms ...]</p>
 
-          <h2>1. Acceptance of Terms</h2>
-          <p>[Detail about acceptance of terms ...]</p>
+      <h2>2. Changes to Terms</h2>
+      <p>[Information on how and when the terms may change ...]</p>
 
-          <h2>2. Changes to Terms</h2>
-          <p>[Information on how and when the terms may change ...]</p>
+      <h2>3. User Responsibilities</h2>
+      <p>[User responsibilities, acceptable use policies ...]</p>
 
-          <h2>3. User Responsibilities</h2>
-          <p>[User responsibilities, acceptable use policies ...]</p>
+      <!-- Continue adding sections as needed for your Terms of Service -->
 
-          <!-- Continue adding sections as needed for your Terms of Service -->
+      <h2>4. Intellectual Property</h2>
+      <p>[Information on intellectual property rights ...]</p>
 
-          <h2>4. Intellectual Property</h2>
-          <p>[Information on intellectual property rights ...]</p>
+      <h2>5. Limitation of Liability</h2>
+      <p>[Details on the limitation of your liability ...]</p>
 
-          <h2>5. Limitation of Liability</h2>
-          <p>[Details on the limitation of your liability ...]</p>
+      <!-- ... Additional sections ... -->
 
-          <!-- ... Additional sections ... -->
+      <h2>6. Governing Law</h2>
+      <p>[Information about the governing law for the terms ...]</p>
 
-          <h2>6. Governing Law</h2>
-          <p>[Information about the governing law for the terms ...]</p>
-
-          <h2>Contact Us</h2>
-          <p>If you have any questions about these Terms, please contact us.</p>
-        </article>
-        <!-- End Terms of Service -->
-      </section>
-    </main>
-
-    <footer>
-      <div class="footer-content">
-        <p>&copy; 2024 Hendrik Siemens. All rights reserved.</p>
-        <ul class="footer-links">
-          <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
-          <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
-          <li>
-            <a href="{{ url_for('main.disclaimer') }}">Legal Disclaimer</a>
-          </li>
-          <li><a href="{{ url_for('main.sitemap') }}">Sitemap</a></li>
-        </ul>
-      </div>
-    </footer>
-  </body>
-</html>
+      <h2>Contact Us</h2>
+      <p>If you have any questions about these Terms, please contact us.</p>
+    </article>
+    <!-- End Terms of Service -->
+  </section>
+</main>
+{% endblock %}

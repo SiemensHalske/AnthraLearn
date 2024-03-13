@@ -47,7 +47,7 @@ header nav {
 }
 
 .hero {
-  background: rgba(0, 0, 81, 0.3);
+  background: rgba(0, 0, 81, 0.3); /* Transparent dark blue background */
   color: #fff;
   padding: 40px 20px;
   text-align: center;
@@ -58,10 +58,12 @@ header nav {
 }
 
 .features {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(200px, 1fr));
+  grid-gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: center; /* Fügt hinzu, falls nicht schon vorhanden */
 }
 
 .feature-container {
@@ -72,6 +74,7 @@ header nav {
   margin: 20px 0;
   width: 50%;
   box-sizing: border-box;
+  text-align: center; /* Added property to center the text */
 }
 
 .feature {
@@ -152,8 +155,8 @@ footer .footer-links li a:hover {
 .disclaimer-section,
 .sitemap-section,
 .privacy-policy {
-  background: rgba(255, 255, 255, 0.85); /* Semi-transparent white */
-  color: #333; /* Dark text for readability */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  color: #fffdd0; /* Dark text for readability */
   padding: 40px 20px; /* Padding inside the section */
   text-align: center; /* Center-align the headings and text */
   border-radius: 15px; /* Rounded corners for the section */
@@ -232,4 +235,16 @@ footer .footer-links li a:hover {
 .sitemap-container a:hover,
 .privacy-policy a:hover {
   color: #0056b3; /* Darkened link color when hovered over */
+}
+
+.user-icon {
+  font-size: 30px;
+}
+
+.feature a[href^="mailto:"] {
+  color: #ffa500; /* Deine bevorzugte Farbe für E-Mail-Links */
+}
+
+.feature a[href^="tel:"] {
+  color: #ffa500; /* Deine bevorzugte Farbe für Telefon-Links */
 }

@@ -1,12 +1,22 @@
 import os
-from flask import Flask
-from flask_jwt_extended import JWTManager
+from flask import Flask, redirect, url_for, request, jsonify
+from flask_jwt_extended import (
+    JWTManager, jwt_required,
+    create_access_token, get_jwt_identity,
+)
+
 from .main.routes import main_bp
 from .auth.routes import auth_bp
 from .models import db
 
 
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 def create_app():
+    clear_screen()
+
     app = Flask('AnthraLearn')
     app.template_folder = 'app\\templates'
     app.static_folder = 'app\\static'
@@ -21,19 +31,22 @@ def create_app():
     # app.config['SERVER_NAME'] = 'AnthraLearn'
     app.config['SESSION_TYPE'] = 'filesystem'
 
-    app.secret_key = os.urandom(24).hex()
-    app.config['SESSION_COOKIE_NAME'] = 'AnthraLearn_session'
+    app.secret_key = os.getenv('SECRET_KEY') or 'dev'
+    app.config['SESSION_COOKIE_NAME'] = 'AnthraLearn'
     app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production
     app.config['SESSION_COOKIE_HTTPONLY'] = True
 
     jwt_secret_key = None
     with open('app\\jwt_key.cert', 'r', encoding='utf-8') as certificate:
         jwt_secret_key = certificate.read()
+    app.config['JWT_SECRET_KEY'] = jwt_secret_key
 
     app.config['JWT_COOKIE_SECURE'] = False  # Set to True in production
+    app.config['JWT_TOKEN_DOMAIN'] = 'localhost'
+    app.config['JWT_ACCESS_COOKIE_NAME'] = 'AnthraLearn_session'
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-    app.config['JWT_SECRET_KEY'] = jwt_secret_key
-    app.config['JWT_COOKIE_CSRF_PROTECT'] = True  # CSRF protection
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
 
     user = 'postgres'
     password = 'zoRRo123?'
@@ -47,5 +60,35 @@ def create_app():
 
     db.init_app(app)
     jwt = JWTManager(app)  # Initialize the JWTManager extension
+
+    @jwt.unauthorized_loader
+    def custom_unauthorized_loader(callback):
+        return redirect(url_for('auth.login', next=request.url))
+
+    @app.route('/token/refresh', methods=['POST'])
+    @jwt_required(refresh=True)
+    def refresh():
+        current_user = get_jwt_identity()
+        new_access_token = create_access_token(identity=current_user)
+        return jsonify(access_token=new_access_token)
+
+    @app.route('/redirect/<page>')
+    def redirect_page(page):
+        if page in ['login', 'signup', 'logout', 'settings']:
+            return redirect(url_for('auth.' + page))
+        else:
+            return redirect(url_for('main.' + page))
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return redirect(url_for('main.home')), 404
+
+    @app.errorhandler(500)
+    def method_not_allowed(e):
+        return redirect(url_for('main.home')), 500
+
+    @app.errorhandler(403)
+    def internal_server_error(e):
+        return redirect(url_for('main.home')), 403
 
     return app

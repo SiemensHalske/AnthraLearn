@@ -1,42 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AnthraLearn - Learning Platform</title>
-    <link
-      href="{{ url_for('static', filename='css/index_styles.css') }}"
-      rel="stylesheet"
-    />
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="{{ url_for('main.home') }}">Home</a></li>
-          <li><a href="{{ url_for('main.courses') }}">Courses</a></li>
-          <li><a href="{{ url_for('main.about') }}">About Us</a></li>
-          <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
-        </ul>
-        <div class="user-profile">
-          <a href="javascript:void(0);" onclick="toggleDropdown()">👤</a>
-          <div class="dropdown-content">
-            <a href="#profile">Profile</a>
-            <a href="#settings">Settings</a>
-            <a href="{{ url_for('auth.logout') }}">Logout</a>
-          </div>
-        </div>
-      </nav>
-    </header>
+{% extends "base.html" %}
 
+{% block content %}
     <div class="container">
       <!-- Container für den Hero-Bereich -->
       <section id="hero" class="hero">
         <div class="hero-content">
           <h1>Welcome to AnthraLearn</h1>
           <p>Your gateway to limitless learning opportunities</p>
-          <a href="#" class="btn btn-primary">Explore Courses</a>
+          <a href="#courses" class="btn btn-primary">Explore Courses</a>
         </div>
       </section>
     </div>
@@ -63,18 +34,4 @@
         </div>
       </div>
     </section>
-    <footer>
-      <div class="footer-content">
-        <p>&copy; 2024 Hendrik Siemens. All rights reserved.</p>
-        <ul class="footer-links">
-          <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
-          <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
-          <li>
-            <a href="{{ url_for('main.disclaimer') }}">Legal Disclaimer</a>
-          </li>
-          <li><a href="{{ url_for('main.sitemap') }}">Sitemap</a></li>
-        </ul>
-      </div>
-    </footer>
-  </body>
-</html>
+{% endblock %}

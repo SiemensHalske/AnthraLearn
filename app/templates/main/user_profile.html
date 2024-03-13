@@ -1,0 +1,93 @@
+{% extends "base.html" %} {% block title %}User Profile - AnthraLearn{% endblock
+%} {% block styles %} {{ super() }}
+<style>
+  /* Basis Stylings für das Profil */
+  .profile-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 800px;
+    margin: auto;
+    padding: 40px;
+    color: #333;
+  }
+
+  .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .profile-picture {
+    border-radius: 50%;
+    height: 120px;
+    width: 120px;
+    margin-right: 25px;
+    object-fit: cover;
+  }
+
+  .profile-details {
+    flex-grow: 1;
+  }
+
+  /* Stylings für den Nutzernamen, wird größer dargestellt */
+  .profile-details h2 {
+    margin: 0;
+    font-size: 1.5em; /* oder die Größe, die Sie für den Nutzernamen wünschen */
+  }
+
+  /* Stylings für die restlichen Nutzerdaten, um sicherzustellen, dass sie dieselbe Größe haben */
+  .profile-info p,
+  .profile-details span {
+    font-size: 1em; /* Standardgröße, passt zu E-Mail-Adresse und Geburtsdatum */
+    color: #666;
+    margin: 5px 0; /* Fügt oben und unten einen kleinen Abstand hinzu */
+  }
+
+  /* Stylings für Profilaktionsknöpfe */
+  .profile-actions button {
+    margin-right: 10px;
+    transition: opacity 0.3s ease;
+  }
+
+  .profile-actions button:hover {
+    opacity: 0.8;
+  }
+</style>
+{% endblock %} {% block content %}
+<section class="container profile-container">
+  <div class="profile-header">
+    <img
+      src="{{ user.profilepicture if user.profilepicture else '/static/images/default-avatar.png' }}"
+      alt="{{ user.username }}'s Profile Picture"
+      class="profile-picture"
+    />
+    <div class="profile-details">
+      <h2>{{ user.username }}</h2>
+      <span>Joined: {{ user.registrationdate.strftime('%B %d, %Y') }}</span>
+    </div>
+  </div>
+
+  <div class="profile-info">
+    <p>Email: {{ user.email }}</p>
+    <p>Date of Birth: {{ user.dateofbirth.strftime('%B %d, %Y') }}</p>
+  </div>
+
+  <div class="profile-actions">
+    <!-- Beispiel für den Link zum Bearbeiten des Profils, muss angepasst werden -->
+    <button
+      class="btn-primary"
+      onclick="location.href='/edit-profile/{{ user.userid }}'"
+    >
+      Edit Profile
+    </button>
+    <!-- Beispiel für den Link zum Ändern des Passworts, muss angepasst werden -->
+    <button
+      class="btn-primary"
+      onclick="location.href='/change-password/{{ user.userid }}'"
+    >
+      Change Password
+    </button>
+  </div>
+</section>
+{% endblock %}

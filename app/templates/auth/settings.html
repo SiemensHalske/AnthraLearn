@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% block title %}Settings - AnthraLearn{% endblock %}
+{% block styles %} {{ super() }}
+<style>
+  /* Eigene Stildefinitionen für die Einstellungsseite */
+  .settings-section {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 800px;
+    margin: 20px;
+    padding: 40px;
+    color: #333;
+  }
+
+  .settings-header {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .settings-form {
+    margin-top: 15px;
+  }
+
+  .settings-form label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+
+  .settings-form input,
+  .settings-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+
+  .settings-form button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+</style>
+{% endblock %} {% block content %}
+<section class="container settings-section">
+  <h1 class="settings-header">Settings</h1>
+  <form class="settings-form" action="#" method="post">
+    <!-- Allgemeine Seiteneinstellungen -->
+    <label for="language-select">Language:</label>
+    <select id="language-select" name="language">
+      <option value="en">English</option>
+      <option value="de" selected>Deutsch</option>
+      <!-- Weitere Sprachoptionen hinzufügen -->
+    </select>
+
+    <label for="theme-select">Theme:</label>
+    <select id="theme-select" name="theme">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+
+    <!-- Nutzerspezifische Profileinstellungen, sichtbar wenn Nutzer angemeldet ist -->
+    {% if user.is_user_authenticated %}
+    <h2>Profile Settings</h2>
+    <label for="user-email">Email:</label>
+    <input type="email" id="user-email" name="email" value="{{ user.email }}" />
+
+    <label for="user-bio">Bio:</label>
+    <textarea id="user-bio" name="bio" rows="4">{{ user.bio }}</textarea>
+
+    <button type="submit">Update Profile</button>
+    {% endif %}
+
+    <button type="submit">Save Settings</button>
+  </form>
+</section>
+{% endblock %}

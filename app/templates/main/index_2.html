@@ -1,0 +1,202 @@
+{% extends "base.html" %} {% block styles %} {{ super() }}
+
+<style>
+  /* Hero Bereich mit einem edlen Lila-bis-Dunkelblau-Verlauf */
+  .hero {
+    position: relative; /* Ermöglicht die Positionierung des Pseudo-Elements */
+    padding: 30px 0;
+    text-align: center;
+    color: #ffffff;
+    max-width: 800px;
+  }
+
+  .hero::before {
+    content: ""; /* Notwendig, um das Pseudo-Element anzuzeigen */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/static/images/banner/index_banner_3.webp");
+    background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+    background-size: cover;
+    background-position: center; /* Zentriert das Bild */
+    opacity: 0.5; /* Setzt die Opazität des Bildes */
+    z-index: -1; /* Stellt sicher, dass das Bild hinter dem Text liegt */
+    border-radius: 15px; /* Abgerundete Ecken */
+  }
+
+  .hero h1 {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background: -webkit-linear-gradient(45deg, #a1c4fd, #c2e9fb);
+    background-clip: text;
+
+    font-size: 48px; /* Größere Schriftgröße für die Überschrift */
+    line-height: 1.1;
+  }
+
+  /* Feature-Icons Stil */
+  .feature-icon {
+    width: 60px; /* Oder eine passende Größe */
+    margin-bottom: 20px; /* Abstand unterhalb des Icons */
+  }
+
+  #features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Passt den Abstand zwischen den Elementen an */
+  }
+
+  .feature-container {
+    text-align: center;
+    max-width: 400px;
+    flex: 0 1 auto; /* Erlaubt den Boxen zu schrumpfen und zu wachsen, aber fängt mit keineränderung basierend auf dem Inhalt an */
+  }
+
+  /* Anpassungen für mobile Endgeräte */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 50px 20px; /* Reduzierter Abstand oben und unten auf Mobilgeräten */
+    }
+
+    .feature-container {
+      margin-bottom: 30px; /* Größerer Abstand zwischen Feature-Blöcken auf kleinen Bildschirmen */
+    }
+
+    .feature-icon {
+      width: 50px; /* Kleinere Icons auf Mobilgeräten */
+    }
+  }
+
+  .explore-course-btn {
+    background-color: #f5555f;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 15px;
+    text-decoration: none;
+    display: inline-block;
+    width: fit-content;
+    font-size: 18px;
+  }
+</style>
+
+{% endblock %} {% block content %}
+<div class="container">
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1>AnthraLearn</h1>
+      <p>Your gateway to limitless learning opportunities</p>
+      <a href="{{ url_for('main.courses') }}" class="explore-course-btn"
+        >Explore Courses</a
+      >
+      <div id="refresh-token-container">
+        <button id="refresh-token-button" onclick="refreshTokenAndRetryRequest()">
+          Refresh Token
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+    <div class="feature-container">
+      <div class="feature">
+        <img
+          src="{{ url_for('static', filename='images/icons/expert.png') }}"
+          alt="Expert Instructors"
+          class="feature-icon"
+        />
+        <h2>Expert Instructors</h2>
+        <p>
+          Delve into new subjects with guidance from seasoned experts. Our
+          instructors bring real-world experience and tailored mentorship to
+          facilitate your learning journey. They do not just teach — they
+          inspire.
+        </p>
+      </div>
+    </div>
+    <div class="feature-container">
+      <div class="feature">
+        <img
+          src="{{ url_for('static', filename='images/icons/interactive.png') }}"
+          alt="Interactive Learning"
+          class="feature-icon"
+        />
+        <h2>Interactive Learning</h2>
+        <p>
+          Dive into a dynamic learning experience with interactive courses. Our
+          platform brings concepts to life through engaging activities, hands-on
+          simulations, and constructive feedback that keeps learners motivated
+          and on track.
+        </p>
+      </div>
+    </div>
+    <div class="feature-container">
+      <div class="feature">
+        <img
+          src="{{ url_for('static', filename='images/icons/flexible.png') }}"
+          alt="Flexible Schedule"
+          class="feature-icon"
+        />
+        <h2>Flexible Schedule</h2>
+        <p>
+          Embrace learning that fits around your life. With our flexible
+          scheduling, you decide when and where to study. The power to balance
+          your education, work, and personal life is in your hands.
+        </p>
+      </div>
+    </div>
+    <!-- Hier füge ich neue Feature-Container hinzu -->
+    <div class="feature-container">
+      <div class="feature">
+        <img
+          src="{{ url_for('static', filename='images/icons/certificate.png') }}"
+          alt="Certification"
+          class="feature-icon"
+        />
+        <h2>Certification</h2>
+        <p>
+          Transform your learning into tangible recognitions with our
+          industry-acclaimed certifications. As you conquer milestones, we award
+          certificates that boost your portfolio and validate your expertise to
+          employers.
+        </p>
+      </div>
+    </div>
+    <div class="feature-container">
+      <div class="feature">
+        <img
+          src="{{ url_for('static', filename='images/icons/support.png') }}"
+          alt="24/7 Support"
+          class="feature-icon"
+        />
+        <h2>24/7 Support</h2>
+        <p>
+          Experience uninterrupted learning with 24/7 support. Whether you've
+          hit a technical snag or need clarity on a course topic, our dedicated
+          support team is always here to help, ensuring your learning never
+          stops.
+        </p>
+      </div>
+    </div>
+    <div class="feature-container">
+      <div class="feature">
+        <img
+          src="{{ url_for('static', filename='images/icons/network.png') }}"
+          alt="Professional Network"
+          class="feature-icon"
+        />
+        <h2>Professional Network</h2>
+        <p>
+          Grow your career by connecting with a network of peers and industry
+          leaders. Our community extends beyond the classroom, offering
+          networking opportunities, industry insights, and partnerships that
+          open doors to new possibilities.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

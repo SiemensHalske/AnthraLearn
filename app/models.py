@@ -1,5 +1,9 @@
 from datetime import datetime
+from flask import request, current_app
 from flask_sqlalchemy import SQLAlchemy
+
+import jwt
+from jwt.exceptions import InvalidTokenError
 
 db = SQLAlchemy()
 
@@ -17,7 +21,7 @@ class User(db.Model):
     dateofbirth = db.Column(db.Date, nullable=True)
 
     def __repr__(self):
-        return f"User('{self.Username}', '{self.Email}')"
+        return f"User('{self.username}', '{self.email}')"
 
     def get_roles(self):
         return UserRole.query.filter_by(UserID=self.UserID).all()
@@ -31,12 +35,40 @@ class User(db.Model):
     def get_feedbacks(self):
         return Feedback.query.filter_by(UserID=self.UserID).all()
 
+    @staticmethod
+    def verify_jwt(jwt_token):
+        try:
+            payload = jwt.decode(
+                jwt_token,
+                current_app.config['JWT_SECRET_KEY'],
+                algorithms=['HS256']
+            )
+            return True, payload
+        except InvalidTokenError:
+            return False, {}
+
+    @staticmethod
+    def get_jwt_from_cookie():
+        jwt_cookie = request.cookies.get(
+            current_app.config['JWT_ACCESS_COOKIE_NAME']
+        )
+        return jwt_cookie
+
+    def is_user_authenticated(self):
+        print('Is user authenticated?')
+        jwt_cookie = self.get_jwt_from_cookie()
+        if jwt_cookie:
+            valid, payload = self.verify_jwt(jwt_cookie)
+            return valid, payload
+        else:
+            return False, 'default'
+
 
 class Role(db.Model):
     __tablename__ = 'roles'
 
-    RoleID = db.Column(db.Integer, primary_key=True)
-    RoleName = db.Column(db.String(255), unique=True, nullable=False)
+    roleid = db.Column(db.Integer, primary_key=True)
+    rolename = db.Column(db.String(255), unique=True, nullable=False)
 
     def __repr__(self):
         return f"Role('{self.RoleName}')"
@@ -45,9 +77,9 @@ class Role(db.Model):
 class UserRole(db.Model):
     __tablename__ = 'user_roles'
 
-    UserID = db.Column(db.Integer, db.ForeignKey(
+    userid = db.Column(db.Integer, db.ForeignKey(
         'users.UserID'), primary_key=True)
-    RoleID = db.Column(db.Integer, db.ForeignKey(
+    roleid = db.Column(db.Integer, db.ForeignKey(
         'roles.RoleID'), primary_key=True)
 
     def __repr__(self):
@@ -57,36 +89,59 @@ class UserRole(db.Model):
 class Course(db.Model):
     __tablename__ = 'courses'
 
-    CourseID = db.Column(db.Integer, primary_key=True)
-    Title = db.Column(db.String(255), nullable=False)
-    Description = db.Column(db.Text, nullable=False)
-    CreatorID = db.Column(db.Integer, db.ForeignKey(
+    courseid = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    creatorid = db.Column(db.Integer, db.ForeignKey(
         'users.UserID'), nullable=False)
-    PublicationDate = db.Column(db.Date, nullable=False)
-    Status = db.Column(db.String(50), nullable=False)
+    publicationdate = db.Column(db.Date, nullable=False)
+    status = db.Column(db.String(50), nullable=False)
+    level = db.Column(db.String(50), nullable=False)
+    duration = db.Column(db.Integer, nullable=False)
+    image_url = db.Column(db.String(255))
 
     def __repr__(self):
-        return f"Course('{self.Title}', '{self.Status}')"
+        return f"Course('{self.title}', '{self.status}')"
 
     def get_modules(self):
-        return Module.query.filter_by(CourseID=self.CourseID).all()
+        return Module.query.filter_by(CourseID=self.courseid).all()
 
     def get_progress(self):
-        return UserProgress.query.filter_by(CourseID=self.CourseID).all()
+        return UserProgress.query.filter_by(CourseID=self.courseid).all()
 
     def get_feedbacks(self):
-        return Feedback.query.filter_by(CourseID=self.CourseID).all()
+        return Feedback.query.filter_by(CourseID=self.courseid).all()
+
+
+class CourseEnrollment(db.Model):
+    __tablename__ = 'courseenrollments'
+
+    enrollmentid = db.Column(db.Integer, primary_key=True)
+    courseid = db.Column(db.Integer, db.ForeignKey(
+        'courses.courseid'), nullable=False)
+    userid = db.Column(db.Integer, db.ForeignKey(
+        'users.userid'), nullable=False)
+    enrollmentdate = db.Column(db.Date)
+
+    # Die UNIQUE-Constraint könnte auch über SQLAlchemy definiert werden,
+    # aber da der SQL Befehl bereits ein Teil davon ist,
+    # ist es hier nicht unbedingt nötig.
+
+    def __init__(self, courseid, userid, enrollmentdate):
+        self.courseid = courseid
+        self.userid = userid
+        self.enrollmentdate = enrollmentdate
 
 
 class Module(db.Model):
     __tablename__ = 'modules'
 
-    ModuleID = db.Column(db.Integer, primary_key=True)
-    CourseID = db.Column(db.Integer, db.ForeignKey(
+    moduleid = db.Column(db.Integer, primary_key=True)
+    courseid = db.Column(db.Integer, db.ForeignKey(
         'courses.CourseID'), nullable=False)
-    Title = db.Column(db.String(255), nullable=False)
-    Description = db.Column(db.Text)
-    Sequence = db.Column(db.Integer, nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text)
+    sequence = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return f"Module('{self.Title}', '{self.Sequence}')"
@@ -230,3 +285,26 @@ class Feedback(db.Model):
 
     def __repr__(self):
         return f"Feedback('{self.Rating}', '{self.DateTime}')"
+
+
+class CourseMaterial(db.Model):
+    __tablename__ = 'coursematerials'
+
+    materialid = db.Column(db.Integer, primary_key=True)
+    courseid = db.Column(db.Integer, db.ForeignKey(
+        'courses.courseid'), nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    filepath = db.Column(db.String(255), nullable=True)
+    uploadedat = db.Column(db.DateTime, default=datetime.utcnow)
+    access_rivileges = db.Column(db.String(50), nullable=True)
+
+    # course = db.relationship('Course', back_populates='coursematerials')
+
+    # Include any additional methods and representation
+    # of the model if necessary
+    def __repr__(self):
+        m_id = self.material_id
+        title = self.title
+        course = self.course_id
+        return f"<CourseMaterial(material_id={m_id}, title={title}, course_id={course})>"

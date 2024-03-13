@@ -1,30 +1,384 @@
+/* registration.css */
+
 body {
-    background-color: #303030; /* Dunkelgrauer Hintergrund für Anthrazit-Thema */
+  background-image: url("/static/images/index_background.webp");
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  align-items: center;
 }
 
-h2.text-center {
-    margin-bottom: 20px;
-    color: #f5f5f5; /* Heller Text für bessere Lesbarkeit auf dunklem Hintergrund */
+header {
+  background: transparent;
+  color: #fff;
+  padding-top: 30px;
+  min-height: 70px;
+  border-bottom: 4px solid #5d3fd3;
+  width: 100%;
+  text-align: center;
 }
 
-.form-control {
-    border-radius: 0.25rem;
-    background-color: #484848; /* Dunkler Hintergrund für Formularfelder */
-    color: #ffffff; /* Weißer Text */
-    border: 1px solid #606060; /* Leicht abgehobene Grenze */
+header a,
+header a:hover {
+  color: #1e90ff;
+  text-decoration: none;
+  text-transform: uppercase;
+  margin: 0 15px;
+}
+
+header ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+header nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.hero {
+  background: rgba(0, 0, 81, 0.3);
+  color: #fff;
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 15px;
+  margin: 20px auto;
+  width: 75%;
+  box-sizing: border-box;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+.feature-container {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fffdd0;
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px 0;
+  width: 50%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.container.signup-container {
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  color: #fffdd0; /* Text color for readability */
+  padding: 20px; /* Consistent padding */
+  border-radius: 15px; /* Rounded corners */
+  margin-top: 5rem; /* Equivalent to 'mt-5', adds spacing above the container */
+  width: 50%; /* Matches the width of .feature-container for consistency */
+  max-width: 1200px; /* Ensures the container doesn't become too wide on larger screens */
+  box-sizing: border-box; /* Includes padding and border in the element's width */
+  margin: 20px auto; /* Centers the container with vertical spacing */
+}
+
+/* Ensure form elements within the signup container are styled appropriately */
+.container.signup-container h2,
+.container.signup-container form,
+.container.signup-container .form-group label,
+.container.signup-container .form-group .form-control,
+.container.signup-container .btn-primary {
+  color: #fff; /* Ensures text and form elements are legible against the dark background */
+  /* Inherits additional styles from global settings for consistency */
+}
+
+.container.signup-container .form-group .form-control {
+  background-color: #ffffff; /* Ensures form inputs are visually distinct */
+  border: 1px solid #ccc; /* Subtle border for inputs */
+  color: #333; /* Text color for inputs */
+}
+
+:root {
+  --btn-font-size: 20px; /* Basis-Schriftgröße für den Button */
+  --btn-padding-vertical: calc(
+    var(--btn-font-size) / 2
+  ); /* Vertikales Padding basierend auf der Schriftgröße */
+  --btn-padding-horizontal: calc(
+    var(--btn-font-size) * 5
+  ); /* Horizontales Padding basierend auf der Schriftgröße */
 }
 
 .btn-primary {
-    background-color: #007bff; /* Beibehaltung der primären Button-Farbe, angepasst für dunkles Thema */
-    border: none;
+  background-color: #007bff; /* Primäre Buttonfarbe */
+  border: none;
+  padding: var(--btn-padding-vertical) var(--btn-padding-horizontal);
+  color: #fff;
+  border-radius: 15px;
+  font-size: var(--btn-font-size);
 }
 
-/* Zusätzlich könntest du überlegen, Hover-Effekte und Fokus-Styles einzuführen, um die Interaktivität zu verbessern. */
 .btn-primary:hover {
-    background-color: #0056b3; /* Dunkler bei Hover */
+  background-color: #0056b3; /* Dunklere Farbe beim Hover */
 }
 
-/* Anpassungen für Links oder weitere Elemente, die im Design benötigt werden, könnten ebenfalls sinnvoll sein. */
-a, a:hover {
-    color: #1e90ff; /* Helle Linkfarben für gute Sichtbarkeit */
+/* Adjusting the responsiveness */
+@media (max-width: 768px) {
+  .container.signup-container {
+    width: 90%; /* Mehr Platz auf kleineren Geräten */
+  }
+}
+
+.feature {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background: rgba(33, 37, 41, 0.8);
+  color: #ddd;
+  margin-top: auto;
+  width: 100%;
+  border-radius: 15px;
+}
+
+footer .footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+footer .footer-links li {
+  display: inline;
+  margin-right: 10px;
+}
+
+footer .footer-links li a {
+  color: #ddd;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer .footer-links li a:hover {
+  color: #ffffff;
+}
+
+.user-profile {
+  position: relative;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fffdd0;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  border-radius: 15px;
+}
+
+.user-profile:hover .dropdown-content {
+  display: block;
+}
+
+/* Terms of Service Section Styles */
+.terms-of-service,
+.disclaimer-section,
+.sitemap-section,
+.privacy-policy {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fffdd0;
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 15px;
+  margin: 20px auto;
+  width: 75%;
+  max-width: 1200px;
+  box-sizing: border-box;
+}
+
+.terms-of-service h1,
+.disclaimer-section h1,
+.sitemap-section h1,
+.privacy-policy h1,
+.terms-of-service h2,
+.disclaimer-section h2,
+.sitemap-section h2,
+.privacy-policy h2 {
+  margin-bottom: 20px;
+}
+
+.terms-of-service p,
+.disclaimer-section p,
+.sitemap-section p,
+.privacy-policy p {
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+.article,
+.disclaimer-container,
+.sitemap-container,
+.privacy-policy .article {
+  text-align: left;
+}
+
+.article ul,
+.article ol,
+.disclaimer-container ul,
+.disclaimer-container ol,
+.sitemap-container ul,
+.sitemap-container ol,
+.privacy-policy .article ul,
+.privacy-policy .article ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.article li,
+.disclaimer-container li,
+.sitemap-container li,
+.privacy-policy .article li {
+  padding: 5px 0;
+}
+
+.terms-of-service a,
+.article a,
+.disclaimer-container a,
+.sitemap-container a,
+.privacy-policy a {
+  color: #1e90ff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.terms-of-service a:hover,
+.article a:hover,
+.disclaimer-container a:hover,
+.sitemap-container a:hover,
+.privacy-policy a:hover {
+  color: #0056b3;
+}
+
+.user-icon {
+  font-size: 30px;
+}
+
+.form-group {
+  max-width: 500px; /* oder die Breite, die du bevorzugst */
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center; /* Zentriert den Button horizontal */
+  flex-direction: column; /* Stellt sicher, dass die Buttons untereinander stehen */
+  align-items: center; /* Zentriert die Elemente horizontal */
+}
+
+.form-label,
+.form-control {
+  width: 100%;
+}
+
+.form-label {
+  display: block;
+  text-align: left;
+}
+
+.form-control {
+  display: block;
+  margin-top: 5px; /* Erhöht den Abstand zum vorherigen Element */
+  margin-bottom: 15px; /* Erhöht den Abstand zum nächsten Element der Gruppe */
+}
+
+/* Container für die Buttons */
+.cbtn-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap; /* Sorgt dafür, dass die Buttons umfließen, falls der Platz zu eng wird */
+  margin-top: 30px; /* Fügt Abstand oberhalb des Button-Containers hinzu */
+  width: 100%; /* Nimmt die volle Breite der verfügbaren Breite ein */
+}
+
+/* Stile für die benutzerdefinierten Buttons mit Gradienten-Hintergrund */
+.cbtn a {
+  padding: 10px 20px;
+  background-image: linear-gradient(
+    45deg,
+    #5d3fd3,
+    #a1c4fd
+  ); /* Gradienten-Farben */
+  color: #fff;
+  border-radius: 15px;
+  text-decoration: none;
+  font-size: 18px;
+  transition: all 0.3s ease; /* Übergang für alle Eigenschaften, einschließlich Hintergrund */
+  text-align: center;
+}
+
+.cbtn a:hover {
+  background-image: linear-gradient(
+    45deg,
+    #7a52d9,
+    #bac8ff
+  ); /* Hellere Gradienten-Farben für Hover */
+  color: #e0d0ff;
+}
+
+/* Stile für spezifische Buttons, falls nötig */
+.cbtn.btn-0 a {
+  background-image: linear-gradient(
+    45deg,
+    #f3e7e9,
+    #e0d0ff
+  ); /* Spezieller Gradient für den "Register" Button */
+}
+
+.cbtn.btn-2 a {
+  background-image: linear-gradient(
+    45deg,
+    #5d3fd3,
+    #f3e7e9
+  ); /* Spezieller Gradient für den "Überspringen" Button */
+  color: #1a1a1a;
+}
+
+.cbtn.btn-3 a {
+  background-image: linear-gradient(
+    45deg,
+    #a1c4fd,
+    #ffffff
+  ); /* Spezieller Gradient für den Login-Link */
+  color: #333;
+}
+
+.cbtn.btn-3 a:hover {
+  background-image: linear-gradient(
+    45deg,
+    #bac8ff,
+    #ffffff
+  ); /* Hellere Gradienten-Farben für Hover beim Login-Link */
+  color: #1a1a1a;
+}
+
+#register-button {
+  margin-bottom: 20px; /* Fügt unterhalb des Buttons zusätzlichen Abstand hinzu */
+  font-size: 20px;
 }

@@ -1,62 +1,202 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Courses - AnthraLearn</title>
-    <link
-      href="{{ url_for('static', filename='css/index_styles.css') }}"
-      rel="stylesheet"
-    />
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="{{ url_for('main.home') }}">Home</a></li>
-          <li><a href="{{ url_for('main.courses') }}">Courses</a></li>
-          <li><a href="{{ url_for('main.about') }}">About Us</a></li>
-          <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
-        </ul>
-        <div class="user-profile">
-          <a href="javascript:void(0);" onclick="toggleDropdown()">👤</a>
-          <div class="dropdown-content">
-            <a href="#profile">Profile</a>
-            <a href="#settings">Settings</a>
-            <a href="{{ url_for('auth.logout') }}">Logout</a>
-          </div>
-        </div>
-      </nav>
-    </header>
+{% extends "base.html" %} {% block styles %} {{ super() }}
+<style>
+  .hero {
+    position: relative; /* Ermöglicht die Positionierung des Pseudo-Elements */
+    padding: 30px 0;
+    text-align: center;
+    color: #ffffff;
+    max-width: 800px;
+  }
 
-    <div class="container">
-      <section id="hero" class="hero">
-        <div class="hero-content">
-          <h1>Courses Offered</h1>
-          <p>Explore our wide range of courses and find your perfect fit.</p>
-          <a href="#" class="btn btn-primary">Browse Courses</a>
-        </div>
-      </section>
+  .hero::before {
+    content: ""; /* Notwendig, um das Pseudo-Element anzuzeigen */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/static/images/banner/index_banner_3.webp");
+    background-repeat: no-repeat; /* Verhindert das Wiederholen des Bildes */
+    background-size: cover;
+    background-position: center; /* Zentriert das Bild */
+    opacity: 0.5; /* Setzt die Opazität des Bildes */
+    z-index: -1; /* Stellt sicher, dass das Bild hinter dem Text liegt */
+    border-radius: 15px; /* Abgerundete Ecken */
+  }
+
+  .hero h1 {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background: -webkit-linear-gradient(45deg, #a1c4fd, #c2e9fb);
+    background-clip: text;
+
+    font-size: 48px; /* Größere Schriftgröße für die Überschrift */
+    line-height: 1.1;
+  }
+
+  .feature-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px;
+    width: 250px; /* Oder eine andere Breite, die zu deinem Design passt */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: Schatten für mehr Tiefe */
+  }
+
+  .course-image img {
+    max-width: 100%; /* Sorgt dafür, dass das Bild komplett im Container sichtbar ist */
+    border-radius: 15px;
+    margin-bottom: 10px; /* Abstand zwischen Bild und Details */
+  }
+
+  .course-details {
+    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%; /* Sorgt dafür, dass der Textbereich die volle Breite des Containers nutzt */
+    gap: 5px; /* Kleiner Abstand für eine klarere Trennung */
+  }
+
+  .course-details h2 {
+    font-size: 1.2em; /* Größere Schrift für den Kursnamen */
+    margin: 0;
+    color: #fffdd0;
+    background-color: rgba(
+      0,
+      0,
+      0,
+      0.5
+    ); /* Optional: Hintergrundfarbe für den Titel */
+    padding: 5px 10px; /* Polsterung innerhalb des Titels */
+    border-radius: 10px; /* Leicht abgerundete Ecken für den Titel */
+    text-align: center;
+    position: relative;
+    top: -20px; /* Positioniert den Titel über dem oberen Rand des Containers */
+    z-index: 1; /* Sorgt dafür, dass der Titel über anderen Elementen liegt */
+  }
+
+  .course-details table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(0, 0, 0, 0.4); /* Optional: Hintergrundfarbe des Textbereichs */
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .course-details th:first-child,
+  .course-details td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  .course-details th:last-child,
+  .course-details td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  .course-details th,
+  .course-details td {
+    border: 1px solid #888;
+    padding: 8px;
+    text-align: left;
+    color: #ddd;
+  }
+
+  .course-details th {
+    color: #ddd;
+  }
+
+  .course-details tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparentes Schwarz */
+  }
+
+  .course-details .detail-title {
+    font-weight: bold;
+  }
+
+  .btn-enroll {
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 15px;
+    border: none;
+    text-align: center;
+    display: block;
+    width: fit-content;
+    align-self: center; /* Zentriert den Button im Container */
+    margin-top: 20px; /* Abstand zwischen dem Text und dem Button */
+    font-size: 16px; /* Standard-Schriftgröße */
+    transition: font-size 0.1s ease; /* Sanfter Übergangseffekt für die Schriftgröße */
+  }
+
+  .btn-enroll:hover {
+    background-color: #218838;
+    font-size: 18px; /* Größere Schrift bei Hover */
+  }
+
+  /* Optional: Media Query für kleinere Bildschirme */
+  @media (max-width: 768px) {
+    .feature-container {
+      width: 200px; /* Kleinere Breite für Mobilgeräte */
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container">
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1>Courses Offered</h1>
+      <p>Explore our wide range of courses and find your perfect fit.</p>
+      <a href="#courses" class="btn btn-primary" id="gettoknowus"
+        >Browse Courses</a
+      >
     </div>
+  </section>
 
-    <section id="course-list" class="features">
-      <!-- Potential course feature blocks -->
-      <!-- Add your course details here following the structure of the feature-container classes -->
-    </section>
-
-    <footer>
-      <div class="footer-content">
-        <p>&copy; 2024 Hendrik Siemens. All rights reserved.</p>
-        <ul class="footer-links">
-          <li><a href="{{ url_for('main.terms') }}">Terms of Service</a></li>
-          <li><a href="{{ url_for('main.privacy') }}">Privacy Policy</a></li>
-          <li>
-            <a href="{{ url_for('main.disclaimer') }}">Legal Disclaimer</a>
-          </li>
-          <li><a href="{{ url_for('main.sitemap') }}">Sitemap</a></li>
-        </ul>
+  <section id="course-list" class="features">
+    {% for course in courses %}
+    <div class="feature-container">
+      <div class="course-image">
+        <img
+          src="{{ url_for('static', filename=course.image_url) }}"
+          alt="Course Image"
+        />
       </div>
-    </footer>
-  </body>
-</html>
+      <div class="course-details">
+        <div class="detail-table">
+          <table>
+            <tr>
+              <td class="detail-title">Description:</td>
+              <td>{{ course.description }}</td>
+            </tr>
+            <tr>
+              <td class="detail-title">Duration:</td>
+              <td>{{ course.duration }} weeks</td>
+            </tr>
+            <tr>
+              <td class="detail-title">Level:</td>
+              <td>{{ course.level }}</td>
+            </tr>
+          </table>
+        </div>
+        <form
+          action="{{ url_for('auth.enroll', courseid=course.courseid) }}"
+          method="POST"
+        >
+          {{ form.csrf_token }} {{ form.hidden_tag() }}
+          <input type="hidden" name="userid" value="{{ user.username }}" />
+          <input type="hidden" name="reason" value="You are not logged in!" />
+          <button type="submit" class="btn btn-enroll">Enroll Now</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}

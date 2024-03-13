@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block styles %} {{ super() }}
+<style>
+  .enrollment-failed {
+    background: rgba(0, 0, 81, 0.3); /* Transparent dark blue background */
+    color: #fffdd0;
+    text-align: center; /* Center the entire content */
+    padding: 50px 20px; /* Additional spacing inside */
+    max-width: 800px;
+    margin: 0 auto; /* Center horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+  }
+
+  .enrollment-failed .course-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    display: block;
+    margin: 20px auto;
+    max-width: 200px;
+    box-sizing: border-box;
+  }
+
+  .enrollment-failed h2 {
+    color: #dc3545; /* Red for error display */
+    margin-top: 20px;
+  }
+
+  .enrollment-failed p {
+    font-size: 1.1em;
+    color: #fffdd0;
+  }
+
+  .btn-try-again {
+    background-color: #0062cc;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 15px;
+    text-decoration: none;
+    display: block;
+    margin: 30px auto;
+    width: fit-content; /* Correct the width property */
+  }
+
+  .btn-try-again:hover {
+    background-color: #0044cc;
+  }
+
+  blockquote {
+    background: rgba(0, 128, 128, 0.5); /* Transparent teal background */
+    color: #fff;
+    border: 10px solid #cc0000;
+    margin: 24px 0;
+    padding: 24px;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 15px;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container">
+  <div class="enrollment-failed">
+    <div class="course-image">
+      <!-- Das Bild sollte entsprechend dem spezifischen Fehler aktualisiert werden, falls erforderlich -->
+      <img
+        src="{{ url_for('static', filename='images/courses/course1.png') }}"
+        alt="Course Image"
+      />
+    </div>
+    <h2>Enrollment Failed</h2>
+    <p>
+      We're sorry, but something went wrong with your enrollment due to the
+      following reason:
+    </p>
+    <blockquote>{{ reason }}</blockquote>
+    <a href="{{ url_for('main.courses') }}" class="btn-try-again">Try Again</a>
+  </div>
+</div>
+{% endblock %}

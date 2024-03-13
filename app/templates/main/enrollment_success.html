@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block styles %} {{ super() }}
+<style>
+  /* Wiederverwendeter individueller Stil von courses.html */
+  .enroll-confirmation {
+    background: rgba(0, 0, 81, 0.3); /* Transparent dark blue background */
+    color: #fffdd0;
+    text-align: center; /* Center the entire content */
+    padding: 50px 20px; /* Additional spacing inside */
+    max-width: 800px;
+    margin: 0 auto; /* Center horizontally */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    margin: 30px auto;
+  }
+
+  .enroll-confirmation .course-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    display: block;
+    margin: 20px auto;
+    max-width: 200px;
+    box-sizing: border-box;
+  }
+
+  .enroll-confirmation h2 {
+    color: #28a745; /* Grün zur Darstellung des Erfolgs */
+    background: rgba(0, 0, 81, 0.7); /* Transparent dark blue background */
+    border: 2px solid red;
+    margin: 24px 0;
+    padding: 24px;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 15px;
+  }
+
+  .enroll-confirmation p {
+    font-size: 1.1em;
+    color: #fffdd0;
+  }
+
+  .enroll-confirmation .back-to-courses-button .btn-back-to-courses {
+    background-color: #0062cc;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 15px;
+    text-decoration: none;
+    display: block;
+    margin: 30px auto;
+    max-width: 200px; /* Set a maximum width for the button */
+    width: auto; /* Remove fit-content and let the button size itself */
+    font-size: 16px;
+    transition: all 0.1s ease; /* Add a smooth color transition */
+  }
+
+  .enroll-confirmation .back-to-courses-button .btn-back-to-courses:hover {
+    background-color: #0044cc;
+    font-size: 18px; /* Enlarge the button on hover */
+  }
+
+</style>
+{% endblock %} {% block content %}
+<div class="container">
+  <div class="enroll-confirmation">
+    <div class="course-image">
+      <img
+        src="{{ url_for('static', filename='images/courses/course1.png') }}"
+        alt="Course Image"
+      />
+      <h2>Enrollment Successful!</h2>
+      <p>
+        Congratulations! You have successfully enrolled in the course. You will
+        receive an email with further instructions.
+      </p>
+      <div class="back-to-courses-button">
+        <a href="{{ url_for('main.courses') }}" class="btn btn-back-to-courses"
+          >Zurück zu Kursen</a
+        >
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+</div>
